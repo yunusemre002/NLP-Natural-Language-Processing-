@@ -1,3 +1,5 @@
+# Kaynak: http://www.nltk.org/howto/sentiment.html
+
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 sentences = [
