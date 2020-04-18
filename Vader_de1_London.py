@@ -13,6 +13,7 @@ reviews_df_com = reviews_df_com.dropna().copy() # boş yorum varsa kaldırır.
 reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
 print(reviews_df_com.count() , reviews_df_com.describe(), sep="\n")
 
+
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
 from nltk.corpus import wordnet
 import string
@@ -37,7 +38,7 @@ def clean_text(text):
     text = [word for word in text if not any(c.isdigit() for c in word)]    # remove words that contain numbers
     stop = stopwords.words('english')
     text = [x for x in text if x not in stop]     # remove stop words
-    text = [t for t in text if len(t) > 0]        # remove empty tokens"""
+    text = [t for t in text if len(t) > 0]        # remove empty tokens
     pos_tags = pos_tag(text)
     text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
     text = [t for t in text if len(t) > 1]     # remove words with only one letter
