@@ -1,0 +1,65 @@
+'hotel', 43923
+'room', 39174
+'staff', 18214
+'service', 13370
+'breakfast', 12217
+'bar', 9490
+'location', 8806
+'restaurant', 7014
+'bathroom', 5377
+'food', 5368
+'bed': 6015
+'view': 4586,
+
+
+------------------------------------------------------------------ W2V + Fasttex -------------------------------------------------------------------------------------------------
+1. Most similar to ['staff'] 	-> ('team', 0.5600), ('employee', 0.49374), ('everyone', 0.5933), ('host', 0.5027), ('staf', 0.8581), ('staffer', 0.8724), ('staffmember', 0.7315)
+2. Most similar to ['location'] -> ('position', 0.7028), ('located', 0.5157), ('spot', 0.4717), ('locatie', 0.8049), ('located', 0.7731), ('localisation', 0.8129)
+3. Most similar to ['room']     -> ('bedroom', 0.5666), ('rooom', 0.9447), ('roooms', 0.8848) 
+4. Most similar to ['breakfast']-> ('breackfast', 0.5005), ('breakfeast', 0.4910), ('breakfats', 0.9595), ('brekfast', 0.9437),('breakfest', 0.8730), ('bfast', 0.8107)
+5. Most similar to ['bed']      -> ('pillow', 0.5807), ('mattress', 0.5692), ('chair', 0.5139), ('bedding', 0.5044),  ('bedsheets', 0.8430), ('beds', 0.9087)
+6. Most similar to ['service']  -> ('sevice', 0.4480), ('presentation', 0.4408), ('deliver', 0.4151), ('housekeep', 0.4263),  ('seervice', 0.9216), ('roomservice', 0.9031), ('servicing', 0.8990)
+7. Most similar to ['bathroom'] -> ('bathrooms', 0.7026), ('bath', 0.6796), ('bathtub', 0.6052), ('shower', 0.5574), ('tub', 0.5549), ('toilet', 0.5324), ('bathrooom', 0.9944),  ('bathrom', 0.9467)
+8. Most similar to ['view']     -> ('overlook', 0.7513), ('facing', 0.5536), ('views', 0.9849), ('viewing', 0.8934), ('vieuw', 0.8517), ('viewpoint', 0.8269), ('overview', 0.8269)
+9. Most similar to ['food']     -> ('meal', 0.6452), ('dish', 0.5842), ('menu', 0.5589), ('lunch', 0.5225), ('dinner', 0.5218)
+10. Most similar to ['restaurant'] -> ('restaurants', 0.5152), ('restaruant', 0.5104), ('eatery', 0.4917), ('dining', 0.4839), ('restuarant', 0.4917), ('hotelrestaurant', 0.9543)
+
+
+
+---------------------------------------------W2V--------------------------------------------------------------------------
+1. Most similar to ['staff'] 	-> ('team', 0.5600), ('employee', 0.49374), ('everyone', 0.5933), ('host', 0.5027)
+2. Most similar to ['location'] -> ('position', 0.7028), ('located', 0.5157), ('spot', 0.4717)
+3. Most similar to ['room']     -> ('bedroom', 0.5666)
+4. Most similar to ['breakfast']-> ('breackfast', 0.5005), ('breakfeast', 0.4910)
+5. Most similar to ['bed']      -> ('pillow', 0.5807), ('mattress', 0.5692), ('chair', 0.5139), ('bedding', 0.5044)
+6. Most similar to ['service']  -> ('sevice', 0.4480), ('presentation', 0.4408), ('deliver', 0.4151), ('housekeep', 0.4263), ('housekeeping', 0.4323)
+7. Most similar to ['bathroom'] -> ('bathrooms', 0.7026), ('bath', 0.6796), ('bathtub', 0.6052), ('shower', 0.5574), ('tub', 0.5549), ('toilet', 0.5324)
+8. Most similar to ['view']     -> ('overlook', 0.7513), ('facing', 0.5536), ('glimpse', 0.4688805341720581), ('face', 0.4687), ('overlooking', 0.7416)
+9. Most similar to ['food']     -> ('meal', 0.6452), ('dish', 0.5842), ('menu', 0.5589), ('lunch', 0.5225), ('dinner', 0.5218)
+10. Most similar to ['restaurant'] -> ('restaurants', 0.5152), ('restaruant', 0.5104), ('eatery', 0.4917), ('dining', 0.4839), ('restuarant', 0.4917)
+
+
+------------------------------------------Fasttex------------------------------------------------------------------------------
+1. Most similar to ['staff'] 	-> ('staffed', 0.9019), ('staffer', 0.8724), ('staf', 0.8581), ('barstaff', 0.8463), ('waitstaff', 0.8365), ('staffmember', 0.7315)
+2. Most similar to ['location']	-> ('localisation', 0.8129), ('locatie', 0.8049), ('position', 0.7938), ('located', 0.7731)
+3. Most similar to ['room'] 	-> ('rooom', 0.9447), ('roooms', 0.8848) 
+4. Most similar to ['breakfast']-> ('breakfats', 0.9595), ('breakfat', 0.9585), ('breackfast', 0.9556), ('brekfast', 0.9437),('breakfest', 0.8730), ('bfast', 0.8107)
+5. Most similar to ['bed'] 	-> ('bedded', 0.9457), ('beds', 0.9087), ('bedbug', 0.9016), ('bedsheets', 0.8430)
+6. Most similar to ['service']  -> ('serviced', 0.9628176093101501), ('disservice', 0.9414), ('seervice', 0.9216), ('roomservice', 0.9031), ('servicing', 0.8990)
+7. Most similar to ['bathroom'] -> ('bathrooom', 0.9944),  ('bathrom', 0.9467), ('batrooms', 0.8900), ('washroom', 0.8643), ('bathrobe', 0.8608), ('baths', 0.8440)
+8. Most similar to ['view']     -> ('views', 0.9849), ('viewing', 0.8934), ('vieuw', 0.8517), ('viewpoint', 0.8269), ('overview', 0.8269), ('overlooks', 0.7545)
+9. Most similar to ['food']     -> ('foodies', 0.8985), ('foodie', 0.8957), ('seafood', 0.8527), ('meal', 0.7125),('menu', 0.6598)
+10. Most similar to ['restaurant'] -> ('restauraunt', 0.9776), ('restaurants', 0.9719), ('restauarant', 0.9672), ('hotelrestaurant', 0.9543), ('resaurant', 0.9452), 
+
+
+
+
+
+
+
+
+
+
+
+
+
