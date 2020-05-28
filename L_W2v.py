@@ -3,6 +3,7 @@ import nltk
 import pandas as pd
 
 #-------------Clean_text_new()----------------------
+from gensim.models import FastText
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
@@ -72,8 +73,8 @@ def clean_text_new(text):
 
 
 def word2vectfonc(kdizi, k):
-    print(str(k) + ". Most similar to {0}".format(kdizi), model.wv.most_similar(positive=kdizi, topn=5))
-    dizi = model.wv.most_similar(positive=kdizi, topn=5)
+    print(str(k) + ". Most similar to {0}".format(kdizi), model.wv.most_similar(positive=kdizi, topn=20))
+    dizi = model.wv.most_similar(positive=kdizi, topn=20)
     for i in dizi:
         kdizi.append(i[0])
 
@@ -99,8 +100,15 @@ if __name__ == "__main__":
         top.append(clean_text_new(i))     #top.append(text)  # şu okadar önemliki anlayamazsınız :)
     #print(top)
 
-    model = gensim.models.Word2Vec(top, size=150, window=10, min_count=2, workers=10)
-    model.train(top, total_examples=len(top), epochs=10)
+    #----------------------- Word2Vect kullanarak---------------
+    # model = gensim.models.Word2Vec(top, size=150, window=10, min_count=2, workers=10)
+    # model.train(top, total_examples=len(top), epochs=10)
+
+    # ----------------------- Fasttext kullanarak---------------
+    model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
+    model.build_vocab(sentences=top)
+    model.train(sentences=top, total_examples=len(top), epochs=10)  # train
+
 
     word_vectors = model.wv
 
