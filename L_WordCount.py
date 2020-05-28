@@ -19,7 +19,7 @@ wordnet_lemmatizer = WordNetLemmatizer()
 # open csv file
 reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data   !!!!!
 reviews_df_com = reviews_df[['Review Text']]
-reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Yorumların %01'ini işle.
+#reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Yorumların %01'ini işle.
 
 # Preproccessing işlemi ile tüm metni "pos" isimli bir liste atıyoruz.
 res = ""
@@ -41,3 +41,6 @@ for i in pos:
 word_count.update(res.split())
 #print(word_count)
 print(word_count.most_common(30)) # ilk 30 u yazdır.
+
+for i in word_count.most_common(40):
+    print(i)
