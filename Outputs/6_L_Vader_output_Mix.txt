@@ -1,0 +1,55 @@
+Fasttex+w2v ekli hali
+
+[8 rows x 12 columns]
+staff  :  13604 / 27330  rewiew is relevant
+ + :  13144 / 13604
+ - :  405 / 13604
+ 0 :  55 / 13604
+
+location  :  9390 / 27330  rewiew is relevant
+ + :  9117 / 9390
+ - :  238 / 9390
+ 0 :  35 / 9390
+
+room  :  16914 / 27330  rewiew is relevant
+ + :  16182 / 16914
+ - :  712 / 16914
+ 0 :  20 / 16914
+
+breakfast  :  7312 / 27330  rewiew is relevant
+ + :  7005 / 7312
+ - :  278 / 7312
+ 0 :  29 / 7312
+
+bed  :  5936 / 27330  rewiew is relevant
+ + :  5612 / 5936
+ - :  303 / 5936
+ 0 :  21 / 5936
+
+service  :  9466 / 27330  rewiew is relevant
+ + :  8939 / 9466
+ - :  430 / 9466
+ 0 :  97 / 9466
+
+bathroom  :  8122 / 27330  rewiew is relevant
+ + :  7734 / 8122
+ - :  365 / 8122
+ 0 :  23 / 8122
+
+view  :  5156 / 27330  rewiew is relevant
+ + :  4976 / 5156
+ - :  178 / 5156
+ 0 :  2 / 5156
+
+food  :  7070 / 27330  rewiew is relevant
+ + :  6821 / 7070
+ - :  240 / 7070
+ 0 :  9 / 7070
+
+restaurant  :  6063 / 27330  rewiew is relevant
+ + :  5683 / 6063
+ - :  265 / 6063
+ 0 :  115 / 6063
+
+
+Process finished with exit code 0
