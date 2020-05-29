@@ -1,46 +1,46 @@
+#This program take a csv and calculate wordcout
+
+import pandas as pd
+from collections import Counter
+word_count = Counter()
+import re
+import nltk
+from nltk.corpus import stopwords
+stop_words = set(stopwords.words('english'))
+
+# open csv file
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data !!!!!
+reviews_df = reviews_df[reviews_df['Review Text'].str.contains("<U") == False] # Remove some reviews created full of unknown characters.
+reviews_df_com = reviews_df[['Review Text']]
+reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Use  %01 of reviews.
+
+# Preprocessing: All reviews  go into list which name is "text".
+stringReviews = ""                                                # Create a String
+text = []                                                         # Create a List
+for review in reviews_df_com["Review Text"]:
+    letters = re.sub('[^a-zA-Z]', ' ', review)                   # Remove everything which is not character from review.
+    tokens = nltk.word_tokenize(letters)                         # ['Hotel', 'is', 'GOOD']
+    lowercase = [l.lower() for l in tokens]                      # ['hotel', 'is', 'good']
+    removeOneCharacter = [i for i in lowercase if len(i) > 2]    # Remove words whom below then 2 character.
+    filtered_result = list(filter(lambda l: l not in stop_words, removeOneCharacter))
+    text.append(' '.join(filtered_result))
+
+# Convert list(name is text) to String(name is stringReviews)
+for i in text:
+    stringReviews = " ".join((stringReviews, i))
+
+# Run WordCount Function on String of reviews.
+word_count.update(stringReviews.split())
+
+# print(word_count)                     # print all of them
+print(word_count.most_common(30))       # Print first 30 member
+for i in word_count.most_common(30):    # Print first 30 member one under the other.
+    print(i)
+
+
+
+# This example belongs to the fundemental function.
 # lines = """delete acxount license key wordpress license when to add new apps""".splitlines()
 # for line in lines:
 #     word_count.update(line.split())
 # print(word_count)
-# The function is fundamental function.
-
-import re
-from collections import Counter
-import pandas as pd
-word_count = Counter()
-
-# import for preproccessing
-import nltk
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
-stop_words = set(stopwords.words('english'))
-wordnet_lemmatizer = WordNetLemmatizer()
-
-# open csv file
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data   !!!!!
-reviews_df_com = reviews_df[['Review Text']]
-#reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Yorumların %01'ini işle.
-
-# Preproccessing işlemi ile tüm metni "pos" isimli bir liste atıyoruz.
-res = ""
-pos = []
-for i in reviews_df_com["Review Text"]:
-    pletters = re.sub('[^a-zA-Z]', ' ', i)
-    ptokens = nltk.word_tokenize(pletters)
-    plowercase = [l.lower() for l in ptokens]
-    pfiltered_presult = list(filter(lambda l: l not in stop_words, plowercase))
-    plemmas = [wordnet_lemmatizer.lemmatize(t) for t in pfiltered_presult]
-    pos.append(' '.join(plemmas))
-
-# pos isimli listi tek bir stringe çevirdik
-for i in pos:
-    res = " ".join((res, i))
-#print(res)
-
-# String üzerinde WordCount uyguladık.
-word_count.update(res.split())
-#print(word_count)
-print(word_count.most_common(30)) # ilk 30 u yazdır.
-
-for i in word_count.most_common(40):
-    print(i)
