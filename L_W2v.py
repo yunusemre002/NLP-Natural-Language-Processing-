@@ -1,42 +1,19 @@
-import gensim as gensim
-import nltk
 import pandas as pd
-
-#-------------Clean_text_new()----------------------
-from gensim.models import FastText
+from nltk import pos_tag, re, word_tokenize
+from gensim.models import FastText, Word2Vec
 from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
+from nltk.corpus import wordnet, stopwords
 stop_words = set(stopwords.words('english'))
-wordnet_lemmatizer = WordNetLemmatizer()
-#---------------------------------------------------
 
-# 1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  önemli
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data   !!!!!
-reviews_df_com = reviews_df[['Review Text','Review Rating']]
-reviews_df_com.insert(2,'Tag', 0, True)
-reviews_df_com.insert(3, 'staff', 0, True)
-reviews_df_com.insert(4, 'location', 0, True)
-reviews_df_com.insert(5, 'room', 0, True)
-reviews_df_com.insert(6, 'breakfast', 0, True)
-reviews_df_com.insert(7, 'bed', 0, True)
-reviews_df_com.insert(8, 'service', 0, True)
-reviews_df_com.insert(9, 'bathroom', 0, True)
-reviews_df_com.insert(10, 'view', 0, True)
-reviews_df_com.insert(11, 'food', 0, True)
-reviews_df_com.insert(12, 'restaurant', 0, True)
-# ['My cat ... 5 1 0 0 0 1 0 0 1 1 0 1] DF toplam 13 column. 2.S, user's star: 5/5. 3-13.S Vader  (1 0 -1) = + nötr -.
-
-reviews_df_com = reviews_df_com.dropna().copy() # boş yorum varsa kaldırır.
-# reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42) # Yorumların %01'ini =  150/15000 taneyi işle.
+#-------------------------------------------------Import Data from CSV-------------------------------------------------------
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")  # Read data !!!!
+reviews_df = reviews_df[reviews_df['Review Text'].str.contains("<U") == False] # Remove some reviews created full of unknown characters.
+reviews_df_com = reviews_df[['Review Text']]                                   # Remove except for  "Review Text"
+reviews_df_com = reviews_df_com.dropna().copy()                                # Remove empty reviews ,if there is.
+reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42)   # Take %01 of reviews.
 print(reviews_df_com.describe())
 
-
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
-from nltk.corpus import wordnet
-import string
-from nltk import pos_tag, re
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 def get_wordnet_pos(pos_tag):
     if pos_tag.startswith('J'):
         return wordnet.ADJ
@@ -49,29 +26,17 @@ def get_wordnet_pos(pos_tag):
     else:
         return wordnet.NOUN
 def clean_text(text):
-    text =str(text)
     text = text.lower()    # lower text
-    #text = [word.strip(string.punctuation) for word in text.split(" ")]     # tokenize text and remove puncutation
     text = re.sub('[^a-zA-Z]', ' ', text)
-    text = nltk.word_tokenize(text)
-    text = [word for word in text if not any(c.isdigit() for c in word)]    # remove words that contain numbers
-    stop = stopwords.words('english')
-    text = [x for x in text if x not in stop]     # remove stop words
-    text = [t for t in text if len(t) > 0]        # remove empty tokens
+    text = word_tokenize(text)
+    text = [x for x in text if x not in stop_words]     # remove stop words
     pos_tags = pos_tag(text)
     text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
-    text = [t for t in text if len(t) > 1]     # remove words with only one letter
+    # text = [WordNetLemmatizer().lemmatize(t) for t in text]                                 # Other option of lemmatizer
+    text = [t for t in text if len(t) > 1]     # remove words with only one letter or empty
     return (text)
 
-def clean_text_new(text):
-    pletters = re.sub('[^a-zA-Z]', ' ', text)
-    ptokens = nltk.word_tokenize(pletters)
-    plowercase = [l.lower() for l in ptokens]
-    pfiltered_presult = list(filter(lambda l: l not in stop_words, plowercase))
-    plemmas = [wordnet_lemmatizer.lemmatize(t) for t in pfiltered_presult]
-    return plemmas
-
-
+# ------------------------------- Find and Print---------------------------------
 def word2vectfonc(kdizi, k):
     print(str(k) + ". Most similar to {0}".format(kdizi), model.wv.most_similar(positive=kdizi, topn=20))
     dizi = model.wv.most_similar(positive=kdizi, topn=20)
@@ -79,10 +44,7 @@ def word2vectfonc(kdizi, k):
         kdizi.append(i[0])
 
 if __name__ == "__main__":
-    k = sonuc = posNumber = negNumber = notrNumber = 0
-    attributes = ["staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
-
-    # Bunları word to vect ile genişleteceğiz.
+    # These lists extends using W2V and Fasttext
     staff = ["staff"]
     loc = ["location"]
     room = ["room"]
@@ -94,21 +56,19 @@ if __name__ == "__main__":
     food = ["food"]
     rest = ["restaurant"]
 
-    #---------------------------- Word2Vec ----------------------------------
-    top = []
+    #-------------------------- Preproccessing ----------------------------------
+    reviews = []
     for i in reviews_df_com["Review Text"]:
-        top.append(clean_text_new(i))     #top.append(text)  # şu okadar önemliki anlayamazsınız :)
-    #print(top)
+        reviews.append(clean_text(i))     #top.append(text)  # That is very IMPORTANT !!! :)
 
-    #----------------------- Word2Vect kullanarak---------------
-    # model = gensim.models.Word2Vec(top, size=150, window=10, min_count=2, workers=10)
-    # model.train(top, total_examples=len(top), epochs=10)
+    # --------------------------- Word2Vect ----------------------------------
+    model = Word2Vec(reviews, size=150, window=10, min_count=2, workers=10)
+    model.train(reviews, total_examples=len(reviews), epochs=10)
 
-    # ----------------------- Fasttext kullanarak---------------
-    model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
-    model.build_vocab(sentences=top)
-    model.train(sentences=top, total_examples=len(top), epochs=10)  # train
-
+    # ---------------------------- Fasttext ----------------------------------
+    # model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
+    # model.build_vocab(sentences=reviews)
+    # model.train(sentences=reviews, total_examples=len(top), epochs=10)  # train
 
     word_vectors = model.wv
 
