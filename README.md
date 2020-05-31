@@ -1,6 +1,9 @@
 # NLP-Natural-Language-Processing-
 Final Project
 
+### Dataset:
+<div class='text-justify'>
+  Sonuçlarının kalitesi Datasatinin kalitesi kadardır! a benzer güzel bir yorum vardı. Evet veriyle uğraşıyoruz veri üzerinde bir takım işlmeler yapıyoruz dolayısıyla verimizin güzellii ölçüsünde sonuçlarımızda güzel olacaktır. Dataseti aldığımız kaynakta datasette 27329 yorum olduğu söylensede yapılan incelemeler neticesinde bu yorumların:  431 tanesi "<U+03BD>" gibi geçersi karakterlerden oluştuğu ve 3350 tane yorumun ise farklı dillerle oluşturulduğu gözlemlenmiştir. Bu sayılar mevcut veri göz önünde bulundurulduğunda gözardı edilemeyecek kadar büyük olduğu için yukarıda bahsedilen alakasız yorumlar önce languageDetection.py vasıtasıyla tespit edildiler. Daha sonra bu cümlelerde tekrar edilen ve ingilizcede var olmayan harf ve kelimeler tespit edildi. Bu harf/kelime grupları (på, ich, wir, des, ò, ci, Bij, piu, Che dire, Ci, è, un, ed, ó, á, ä, å, di, ç, ğ, ş, ö, ü) excel yardımıyla datasetten çıkartıldı.
 
 ### Otel attributelerinin belirlenmesi ve Word2Vect kullanımı:
 <div class='text-justify'>
