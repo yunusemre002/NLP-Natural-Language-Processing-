@@ -1,39 +1,28 @@
-import gensim as gensim
-import nltk
 import pandas as pd
 from termcolor import colored
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sn
-from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
-"""
-1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  önemli
-"""
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data   !!!!!
-reviews_df_com = reviews_df[['Review Text','Review Rating']]
-reviews_df_com.insert(2,'Tag', 0, True) # tag diye kolon ekledim 2. sıraya ilkledim 0 diye
-"""['My mother, daughter, and myself... 5 1 0 0 0 1 0 0 1 1 0 1] DF toplam 13 sütun/başlıktan müteşekkildir. 
-1. Colunm belong to reviews.
-2. sütun, kullanıcının verdiği yıldızı temsil eder. 5 üzerinden değerlendirilir.
-3. sütun lexion based sentiment analysis yöntemi olan Vader ile cümlenin (1 0 -1) + - or nötr olduğu hususu temsil edilir.
-Between 4-13 columns names like below(staff,location....). That is hotels attributes which is defined by us. And this colums 
-just take a value that is 0 or 1. For a review (row): if 4. column is 0, we get not to mensioned about staff at this review.
-And if 5. column is 1, we get there some thing about location because, this word : "location" is used in this review. 
-"""
-reviews_df_com.insert(3, 'staff', 0, True)
-reviews_df_com.insert(3, 'location', 0, True)
-reviews_df_com.insert(3, 'room', 0, True)
-reviews_df_com.insert(3, 'breakfast', 0, True)
-reviews_df_com.insert(3, 'bed', 0, True)
-reviews_df_com.insert(3, 'service', 0, True)
-reviews_df_com.insert(3, 'bathroom', 0, True)
-reviews_df_com.insert(3, 'view', 0, True)
-reviews_df_com.insert(3, 'food', 0, True)
-reviews_df_com.insert(3, 'restaurant', 0, True)
 
-reviews_df_com = reviews_df_com.dropna().copy() # boş yorum varsa kaldırır.
-reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
+# 1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  # Important!
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data   !!!!!
+
+print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
+isim = input("Please enter hotel name?")
+reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
+#reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
+
+extraColumnName = ["Tag", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+for index, columnName in enumerate(extraColumnName):
+    reviews_df_com.insert((index+2), columnName, 0, True)
+# ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 14 column.
+# [ 0.Colunm: belong to review. , 1.Col: "Review Rating" given by users, 1 to 5. , 2.Col: "Property Name" = Hotel Name ,
+# 3.Col: "Tag" Using Vader (lexion based sentiment analysis method) find polarity of review. (1 0 -1) =  (+ - notr)
+# Between 4-13 columns names like below(staff,location....). That is hotels attributes which is defined by us. And this colums
+# just take a value that is 0 or 1. For a review (row): if 4. column is 0, we get not to mensioned about staff at this review.
+# And if 5. column is 1, we get there some thing about location because, this word : "location" is used in this review. ]
+
+reviews_df_com = reviews_df_com.dropna().copy() # Remove emty review.
+#reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
 print(reviews_df_com.describe())
 
 #------------------------------------------------SENTİMENT ANALYSES---------------------------------------------------
@@ -43,6 +32,7 @@ def sentiment_scores(sentence):
     sid_obj = SentimentIntensityAnalyzer()    # Create a SentimentIntensityAnalyzer object.
     score = sid_obj.polarity_scores(sentence)
     #print("Overall SA is : ", score)
+    #print(sentence, score)
     return score["compound"]
 
 def findSubject(dizi,t):            # This function searchs that does the review has got input word or not.
@@ -88,13 +78,13 @@ if __name__ == "__main__":
 
         # given compound put in variable which name is sonuc then we will decide the review is positive, negtive
         # or notr. After we decide that, we set the "tag" columns like decided.
-        if   sonuc > 0 :                                # Positive  23569
+        if   sonuc > 0.05 :                                # Positive
             reviews_df_com['Tag'].values[t] = 1
-        elif sonuc == 0 :                               # Nötr    1538
+        elif sonuc > -0.05 :                               # Nötr
             reviews_df_com['Tag'].values[t] = 0
-        else:                                           # Negative // sonuc < 0  2223
+        else:                                              # Negative // sonuc < -0.05
             reviews_df_com['Tag'].values[t] = -1
-            #print(colored(i, 'red'))
+            print(colored(i, 'red'), sonuc)
 
         findSubject(staff, t)
         findSubject(loc, t)
@@ -109,7 +99,7 @@ if __name__ == "__main__":
 
         #print(reviews_df_com.values[t])
 
-    #print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
+    print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
 
     for i in attributes:
         df1 = reviews_df_com[reviews_df_com[i] == 1]    # Sadece ilgili atribute içeren reviewlerden bir df1
@@ -125,13 +115,17 @@ if __name__ == "__main__":
         print()
 
         #-------------------------Graphic---------------------------
-        activities = ['Positive', 'Negative', 'Notr']
-        slices = [dfpos, dfneg, dfnotr]
-        colors = ['g', 'r', 'y']
-        plt.pie(slices, labels=activities, colors=colors, startangle=90, explode=(0, 0.1, 0), radius=1.2, autopct='%1.1f%%')
-        plt.legend()
+        # activities = ['Positive', 'Negative', 'Notr']
+        # slices = [dfpos, dfneg, dfnotr]
+        # colors = ['g', 'r', 'y']
+        # plt.pie(slices, labels=activities, colors=colors, startangle=90, explode=(0, 0.1, 0), radius=1.2, autopct='%1.1f%%')
+        # plt.legend()
+        # plt.show()
 
-        plt.show()
+
+
+
+
 
 
 
