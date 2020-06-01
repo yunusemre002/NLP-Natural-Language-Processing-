@@ -6,11 +6,10 @@ from nltk.corpus import wordnet, stopwords
 stop_words = set(stopwords.words('english'))
 
 #-------------------------------------------------Import Data from CSV-------------------------------------------------------
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")  # Read data !!!!
-reviews_df = reviews_df[reviews_df['Review Text'].str.contains("<U") == False] # Remove some reviews created full of unknown characters.
-reviews_df_com = reviews_df[['Review Text']]                                   # Remove except for  "Review Text"
-reviews_df_com = reviews_df_com.dropna().copy()                                # Remove empty reviews ,if there is.
-reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42)   # Take %01 of reviews.
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data !!!!
+reviews_df_com = reviews_df[['Review Text']]                                        # Remove except for  "Review Text"
+reviews_df_com = reviews_df_com.dropna().copy()                                     # Remove empty reviews ,if there is.
+#reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Take %01 of reviews.
 print(reviews_df_com.describe())
 
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
@@ -38,10 +37,12 @@ def clean_text(text):
 
 # ------------------------------- Find and Print---------------------------------
 def word2vectfonc(kdizi, k):
-    print(str(k) + ". Most similar to {0}".format(kdizi), model.wv.most_similar(positive=kdizi, topn=20))
-    dizi = model.wv.most_similar(positive=kdizi, topn=20)
-    for i in dizi:
-        kdizi.append(i[0])
+    dizi = list(model.wv.most_similar(positive=kdizi, topn=10))  # function return tuple. To chance it, convert to list.
+    for i in range(len(dizi)):
+        d = list(dizi[i])                                        # dizi[i] is tuple, so converted.
+        d[1] = format(d[1], '.4f')                               # just take .0000 (4 decimal after dot.)
+        dizi[i] = tuple(d)                                        # reformat to tuple
+    print(str(k) + ". Most similar to {0}".format(kdizi), dizi)
 
 if __name__ == "__main__":
     # These lists extends using W2V and Fasttext
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     # ---------------------------- Fasttext ----------------------------------
     # model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
     # model.build_vocab(sentences=reviews)
-    # model.train(sentences=reviews, total_examples=len(top), epochs=10)  # train
+    # model.train(sentences=reviews, total_examples=len(reviews), epochs=10)  # train
 
     word_vectors = model.wv
 
