@@ -11,10 +11,10 @@ class bcolors:
     WARNING = '\033[93m'
     ENDC = '\033[0m'
 
-with open("C:/Users/Demir/Desktop/Final_Project/DataSets/sifatlar1.csv", encoding = "ISO-8859-1", ) as f:
+with open("C:/Users/Demir/Desktop/Final_Project/DataSets/adjectives.csv", encoding = "ISO-8859-1", ) as f:
     reader = csv.reader(f)                  # Read adjactives list from csv
     data = list(reader)                     # output: list of list, each row is a list which is in list.
-data2 = sum(data, [])                       # list of list convert to list of string.
+adjList = sum(data, [])                     # list of list convert to list of string.
 
 
 # 1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  # Important!
@@ -25,13 +25,13 @@ isim = input("Please enter hotel name?")
 reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
 #reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
 
-extraColumnName = ["Tag", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+extraColumnName = ["Tag", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 for index, columnName in enumerate(extraColumnName):
     reviews_df_com.insert((index+2), columnName, 0, True)
-# ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 14 column.
+# ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 15 column.
 # [ 0.Colunm: belong to review. , 1.Col: "Review Rating" given by users, 1 to 5. , 2.Col: "Property Name" = Hotel Name ,
 # 3.Col: "Tag" Using Vader (lexion based sentiment analysis method) find polarity of review. (1 0 -1) =  (+ - notr)
-# Between 4-13 columns names like below(staff,location....). That is hotels attributes which is defined by us. And this colums
+# Between 4-14 columns names like below(hotel, staff,....). That is hotels attributes which is defined by us. And this colums
 # just take a value that is 0 or 1. For a review (row): if 4. column is 0, we get not to mensioned about staff at this review.
 # And if 5. column is 1, we get there some thing about location because, this word : "location" is used in this review. ]
 
@@ -58,9 +58,10 @@ def findSubject(dizi,t):            # This function searchs that does the review
 
 if __name__ == "__main__":
     k = sonuc = posNumber = negNumber = notrNumber = 0
-    attributes = ["staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+    attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
     # #Bunları word to vect ile genişleteceğiz.
+    # hotel = ["hotel"]
     # staff = ["staff"]
     # loc = ["location"]
     # room = ["room"]
@@ -73,6 +74,7 @@ if __name__ == "__main__":
     # rest = ["restaurant"]
 
     # This outputs created by us. It is handmade but when it was created, W2V and Fasttext algorithms used (in L_W2V.pf).
+    hotel = ["hotel", "otel", "motel", "hotels", 'accommodation']
     staff = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
     loc = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
     room = ["room", 'bedroom', 'rooom', 'roooms']
@@ -100,6 +102,7 @@ if __name__ == "__main__":
             reviews_df_com['Tag'].values[t] = -1
             # print(colored(i, 'red'), sonuc)
 
+        findSubject(hotel, t)
         findSubject(staff, t)
         findSubject(loc, t)
         findSubject(room, t)
@@ -116,17 +119,19 @@ if __name__ == "__main__":
     print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
 
     for i in attributes:
-        df1 = reviews_df_com[reviews_df_com[i] == 1]    # Sadece ilgili atribute içeren reviewlerden bir df1
-                                                        # oluşturuldu diğer sütun isimleri duruyır sadece stırlar elendi
-        dfpos = len(df1[df1["Tag"] == 1])               # df1 den pos neg notr olnlar ayrıldı.
+        df1 = reviews_df_com[reviews_df_com[i] == 1]    # Take just wanted attributes reviews into df1.
+                                                        # (All column is still exist. Just irrelevant row delete.)
+        dfpos = len(df1[df1["Tag"] == 1])               # The number of pos, neg and notr are calculated.
         dfneg = len(df1[df1["Tag"] == -1])
         dfnotr = len(df1[df1["Tag"] == 0])
 
-        sumRating = df1['Review Rating'].sum(axis=0, skipna = True)
+
+        sumRating = df1['Review Rating'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
         count = len(df1.index)
         avgRating = format(sumRating/count, '.4f')
 
-        print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index), " rewiew is relevant." , Fore.BLUE + "Avarage Rating:",avgRating )
+        print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index),
+              " rewiew is relevant." , Fore.BLUE + "Avarage Rating:",avgRating )
         print(Fore.GREEN  +  " + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
         print(Fore.YELLOW +  " 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
         print(Fore.RED    +  " - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
@@ -141,10 +146,12 @@ if __name__ == "__main__":
         # plt.legend()
         # plt.show()
 
+    #----------------------- Print reviews colorful --------------
     print(attributes)
-    look1 = look = input("which reviews you search from above?")
-
-    if look == 'staff': look = staff
+    look = look1 = input("Please, chose wanted review from above?")     # Take attributes name
+                                                                        # look will pointer to point list of wanted word
+    if look == 'hotel': look = hotel                                    # look1 will use to divide dataFrame
+    elif look == 'staff': look = staff                                  # look = wanted list
     elif look == 'location': look = loc
     elif look == 'room': look = room
     elif look == 'breakfast': look = breakfast
@@ -156,16 +163,18 @@ if __name__ == "__main__":
     elif look == 'restaurant': look = rest
     else: print("Wrong choices")
 
-    df2 = df1[df1[look1] == 1]
-    for i in df2['Review Text']:
-        i = word_tokenize(i)
-        for t in i:
-            if t in data2:
-                print(colored(t, 'green'), end=' ')
-            elif t in look:
-                print(colored(t, 'blue'), end=' ')
+    df2 = reviews_df_com[reviews_df_com[look1] == 1]                        # Divide just wanted department
+    print(len(df2.index))
+    for index, i in enumerate(df2['Review Text']):                          # Take review
+        print(index, end='. ')
+        i = word_tokenize(i)                                                # Tokenize review
+        for t in i:                                                         # Take each token word
+            if t in adjList:                                                # Token is adjective, so if it is in adjactives.csv
+                print(colored(t, 'green'), end=' ')                         # print green
+            elif t in look:                                                 # elif token word is one of the attributes
+                print(colored(t, 'blue'), end=' ')                          # print blue
             else:
-                print(t, end=' ')
+                print(t, end=' ')                                           # any of above print token word like normal.
         print()
 
 

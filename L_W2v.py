@@ -46,6 +46,7 @@ def word2vectfonc(kdizi, k):
 
 if __name__ == "__main__":
     # These lists extends using W2V and Fasttext
+    hotel = ["hotel"]
     staff = ["staff"]
     loc = ["location"]
     room = ["room"]
@@ -63,16 +64,17 @@ if __name__ == "__main__":
         reviews.append(clean_text(i))     #top.append(text)  # That is very IMPORTANT !!! :)
 
     # --------------------------- Word2Vect ----------------------------------
-    model = Word2Vec(reviews, size=150, window=10, min_count=2, workers=10)
-    model.train(reviews, total_examples=len(reviews), epochs=10)
+    # model = Word2Vec(reviews, size=150, window=10, min_count=2, workers=10)
+    # model.train(reviews, total_examples=len(reviews), epochs=10)
 
     # ---------------------------- Fasttext ----------------------------------
-    # model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
-    # model.build_vocab(sentences=reviews)
-    # model.train(sentences=reviews, total_examples=len(reviews), epochs=10)  # train
+    model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
+    model.build_vocab(sentences=reviews)
+    model.train(sentences=reviews, total_examples=len(reviews), epochs=10)  # train
 
     word_vectors = model.wv
 
+    word2vectfonc(hotel, 1)
     word2vectfonc(staff, 1)
     word2vectfonc(loc, 2)
     word2vectfonc(room, 3)
