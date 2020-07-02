@@ -1,0 +1,56 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+            
+    <style>
+      #chartdiv {
+        width: 100%;
+        height: 500px;
+      }
+    </style>
+
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+           
+    <h3 class="h3_Body" id="bas">{{array1}}</h3>
+    <div id="chartdiv"> </div>
+
+    <script>
+      var array2= {{ array2 }};
+      am4core.ready(function() {
+        am4core.useTheme(am4themes_animated);
+        // Create chart instance
+        var chart = am4core.create("chartdiv", am4charts.PieChart);
+        chart.data = [ {"country": "Olumsuz","yorum say?s?":array2[1] ,"url": "{% url 'blog-kategoriler' %}"},
+        {"country": "Olumlu","yorum say?s?": array2[0], "url": "{% url 'blog-yorumlar' %}"}];
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "yorum say?s?";
+        pieSeries.dataFields.category = "country";
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeWidth = 5;
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template.propertyFields.url = "url";
+        pieSeries.slices.template.urlTarget = "_blank";
+        pieSeries.colors.list = [
+          am4core.color("#ED0E0E"),
+          am4core.color("#26ED0E")
+        ];
+        series.tooltip.label.interactionsEnabled = true;
+        series.tooltip.keepTargetHover = true;
+        series.columns.template.tooltipHTML = '<a href="https://en.wikipedia.org/wiki/{category.urlEncode()}">More info</a>';
+        // This creates initial animation
+        pieSeries.hiddenState.properties.opacity = 1;
+        pieSeries.hiddenState.properties.endAngle = -90;
+        pieSeries.hiddenState.properties.startAngle = -90;
+      }); // end am4core.ready()
+    </script>
+
+{% endblock %}
+
+
+{% block hotelRatingPart %}
+  {% include 'blog/partial/p_hotelRating.html' %}
+{% endblock %}

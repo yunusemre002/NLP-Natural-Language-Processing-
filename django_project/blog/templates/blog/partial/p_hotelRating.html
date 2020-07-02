@@ -1,0 +1,229 @@
+<style>
+    .btn-scale-asc-2{
+        min-width: 56px;
+        width: 6%;
+        text-align: center;
+        font-weight: bold;
+        color: black;
+        font-family: 'Lato', sans-serif;
+        background-color: #fcbebe;
+        font-size:12pt; 
+        float:right;
+    }
+
+    .side {
+      float: left;
+      width: 15%;
+      margin-top:10px;
+    }
+
+    .middle {
+      margin-top:10px;
+      float: left;
+      width: 70%;
+    }
+
+    .bar-container {
+      float: right;
+      width: 80%;
+      background-color: #f1f1f1;
+      text-align: left;
+      color: white;
+    }
+
+    .site-header{
+      text-align: center;
+    }
+
+    .bar-11 {width: 0%; height: 20px; background-color: #FBFF00;}
+    .bar-10 {width: 0%; height: 20px; background-color: #00FF1B;}
+    .bar-9 {width: 0%; height: 20px; background-color: #00FBFF;}
+    .bar-8 {width: 0%; height: 20px; background-color: #000CFF;}
+    .bar-7 {width: 0%; height: 20px; background-color: #FF00E0;}
+    .bar-6 {width: 0%; height: 20px; background-color: #000000;}
+    .bar-5 {width: 0%; height: 20px; background-color: #4CAF50;}
+    .bar-4 {width: 0%; height: 20px; background-color: #2196F3;}
+    .bar-3 {width: 0%; height: 20px; background-color: #00bcd4;}
+    .bar-2 {width: 0%; height: 20px; background-color: #f44336;}
+    .bar-1 {width: 0%; height: 20px; background-color: #ff9800;}
+</style>
+
+<div class="content-section" style="width: 110%;">
+    <header>
+        <h2 id='hotel-name-place'  style="display: inline-block;">
+            {% if array1 %}
+                {{array1}}
+            {% else %}
+                Hotel Name
+            {% endif %}
+        </h2>
+        <button id="but" class="btn btn-scale-asc-2">...</button>
+    </header>
+    <p class='text-muted'>Hotel attributes rating.</p>
+    <div class="row" style="text-indent:20px;" >
+        <div class="side">
+            <div>Hotel</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="1w" class="bar-5"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="1s">-</div>
+        </div>
+
+        <div class="side">
+            <div>Staff</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="2w" class="bar-4"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="2s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Location</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="3w"  class="bar-3"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="3s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Room</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="4w"  class="bar-2"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="4s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Breakfast</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="5w"  class="bar-1"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="5s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Bed</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+                <div id="6w"  class="bar-6"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="6s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Service</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+            <div id="7w"  class="bar-7"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="7s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Bathroom</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+                <div id="8w"  class="bar-8"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="8s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>View</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+                <div id="9w"  class="bar-9"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="9s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Food</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+                <div id="10w"  class="bar-10"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="10s" >-</div>
+        </div>
+
+        <div class="side">
+            <div>Restaurant</div>
+        </div>
+        <div class="middle">
+            <div class="bar-container">
+                <div id="11w"  class="bar-11"></div>
+            </div>
+        </div>
+        <div class="side right">
+            <div id="11s" >-</div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var x = document.getElementById("hotel-name-place").value;
+    if ("{{array1}}"){
+        var array2= {{ array2 }};
+        document.getElementById("but").innerHTML =  array2[13];
+        document.getElementById("1s").innerHTML = array2[2];
+        document.getElementById("1w").style.width= (array2[2])*20+ "%";
+        document.getElementById("2s").innerHTML = array2[3];
+        document.getElementById("2w").style.width= (array2[3])*20+ "%";
+        document.getElementById("3s").innerHTML = array2[4];
+        document.getElementById("3w").style.width= (array2[4])*20+ "%";
+        document.getElementById("4s").innerHTML = array2[5];
+        document.getElementById("4w").style.width= (array2[5])*20+ "%";
+        document.getElementById("5s").innerHTML = array2[6];
+        document.getElementById("5w").style.width= (array2[6])*20+ "%";
+        document.getElementById("6s").innerHTML = array2[7];
+        document.getElementById("6w").style.width= (array2[7])*20+ "%";
+        document.getElementById("7s").innerHTML = array2[8];
+        document.getElementById("7w").style.width= (array2[8])*20+ "%";
+        document.getElementById("8s").innerHTML = array2[9];
+        document.getElementById("8w").style.width= (array2[9])*20+ "%";
+        document.getElementById("9s").innerHTML = array2[10];
+        document.getElementById("9w").style.width= (array2[10])*20+ "%";
+        document.getElementById("10s").innerHTML = array2[11];
+        document.getElementById("10w").style.width= (array2[11])*20+ "%";
+        document.getElementById("11s").innerHTML = array2[12];
+        document.getElementById("11w").style.width= (array2[12])*20+ "%";
+    }
+
+    /*document.getElementById('hotel-name-place').innerHTML = "Hotel Name";*/
+</script>

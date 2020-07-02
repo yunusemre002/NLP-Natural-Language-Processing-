@@ -1,0 +1,600 @@
+{% extends "blog/base.html" %}
+{% block mainblock %}
+
+  <style>
+    #chartdiv {
+      width: 1%;
+      height: 500px;
+    }
+
+    .tab{
+      width: 100%;
+      height: 500px;
+    }
+
+    .tab50{
+      width: 150%;
+      height: 1500px;
+    }
+  </style>
+
+  <!-- Resources -->
+  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+  <script src="//www.amcharts.com/lib/3/amcharts.js"></script>
+  <script src="//www.amcharts.com/lib/3/pie.js"></script>
+  <script src="//www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+  <table class="tab ">
+      <tr class="tab">
+        <td style="width: 34%; height: 10px">
+          <div id="chart1" class="tab"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart2" class="tab"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart3" class="tab"></div>
+        </td>
+      </tr>
+
+      <tr class="tab" >
+        <td style="width: 34%; height: 10px">
+          <div id="chart4" class="tab" style="margin-top: 0px;"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart5" class="tab" style="margin-top: 0px;"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart6" class="tab" style="margin-top: 0px;"></div>
+        </td>
+      </tr>
+
+      <tr class="tab">
+        <td style="width: 34%; height: 10px">
+          <div id="chart7" class="tab" style="margin-top: 0px;"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart8" class="tab" style="margin-top: 0px;"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart9" class="tab" style="margin-top: 0px;"></div>
+        </td>
+      </tr>
+
+      <tr class="tab">
+        <td style="width: 34%; height: 10px">
+          <div id="chart10" class="tab" style="margin-top: 0px;"></div>
+        </td>
+        <td style="width: 34%; height: 10px">
+          <div id="chart11" class="tab" style="margin-top: 0px;"></div>
+        </td>
+      </tr>
+  </table>
+
+
+  <script>
+    var chart;
+    var legend;
+    var selected;
+    var array2= {{ array2 }};
+
+    var chart1types = [{type: "Olumlu",percent: Math.round(array2[0]/(array2[0]+array2[1])*100),value: 150,color: "#26ED0E","url": "{% url 'blog-home' %}"},
+                      {type: "Olumsuz",percent: Math.round(array2[1]/(array2[0]+array2[1])*100), value: 30,color: "#ED0E0E","url": "{% url 'blog-yorumlar' %}"}];
+    var chart2types = [{type: "Olumlu",percent: Math.round((array2[2]/(array2[2]+array2[3])*100)),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[3]/(array2[2]+array2[3])*100),color: "#ED0E0E",}];
+    var chart3types = [{type: "Olumlu",percent: Math.round(array2[4]/(array2[4]+array2[5])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[5]/(array2[4]+array2[5])*100),color: "#ED0E0E",}];
+    var chart4types = [{type: "Olumlu",percent: Math.round(array2[6]/(array2[6]+array2[7])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[7]/(array2[6]+array2[7])*100),color: "#ED0E0E",}];
+    var chart5types = [{type: "Olumlu",percent: Math.round(array2[8]/(array2[8]+array2[9])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[9]/(array2[8]+array2[9])*100),color: "#ED0E0E",}];
+    var chart6types = [{type: "Olumlu",percent: Math.round(array2[10]/(array2[10]+array2[11])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[11]/(array2[10]+array2[11])*100),color: "#ED0E0E",}];
+    var chart7types = [{type: "Olumlu",percent: Math.round(array2[12]/(array2[12]+array2[13])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[13]/(array2[12]+array2[13])*100),color: "#ED0E0E",}];
+    var chart8types = [{type: "Olumlu",percent: Math.round(array2[14]/(array2[14]+array2[15])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[15]/(array2[14]+array2[15])*100),color: "#ED0E0E",}];
+    var chart9types = [{type: "Olumlu",percent: Math.round(array2[16]/(array2[16]+array2[17])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[17]/(array2[16]+array2[17])*100),color: "#ED0E0E",}];
+    var chart10types = [{type: "Olumlu",percent: Math.round(array2[18]/(array2[18]+array2[19])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[19]/(array2[18]+array2[19])*100),color: "#ED0E0E",}];
+    var chart11types = [{type: "Olumlu",percent: Math.round(array2[20]/(array2[20]+array2[21])*100),color: "#26ED0E"},
+                      {type: "Olumsuz",percent: Math.round(array2[21]/(array2[20]+array2[21])*100),color: "#ED0E0E",}];
+
+    function generateChartData(types) {
+      var chartData = [];
+      for (var i = 0; i < types.length; i++) {
+        if (i == selected) {
+          for (var x = 0; x < types[i].subs.length; x++) {
+            chartData.push({
+              type: types[i].subs[x].type,
+              percent: types[i].subs[x].percent,
+              color: types[i].color,
+              pulled: true
+            });
+          }
+        } else {
+          chartData.push({
+            type: types[i].type,
+            percent: types[i].percent,
+            color: types[i].color,
+            id: i
+          });
+        }
+      }
+      return chartData;
+    }
+
+    AmCharts.makeChart("chart1", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart1types), //use the first chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+        "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Hotel",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+        window.open('http://127.0.0.1:8000/yorumlar/');
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(); //use the first chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+      }
+    });
+
+
+
+    AmCharts.makeChart("chart2", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart2types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Staff",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart2types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart3", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart3types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Location",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart3types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart4", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart4types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Room",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart4types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart5", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart5types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Breakfast",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart5types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+
+    AmCharts.makeChart("chart6", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart6types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Bed",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart6types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart7", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart7types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Service",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart7types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart8", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart8types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Bathroom",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart8types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart9", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart9types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "View",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart9types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart10", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart10types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Food",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart10types); //use the second chart's data
+          chart.validateData();
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+    AmCharts.makeChart("chart11", {
+      "type": "pie",
+    "theme": "light",
+
+      "dataProvider": generateChartData(chart11types), //use the second chart's data
+      "labelText": "[[title]]: [[value]]%",
+      "balloonText": "[[title]]: [[value]]%",
+      "titleField": "type",
+      "valueField": "percent",
+      "outlineColor": "#FFFFFF",
+      "outlineAlpha": 0.8,
+      "outlineThickness": 2,
+      "colorField": "color",
+      "hideCredits": true,
+      "pulledField": "pulled",
+      "allLabels": [{
+      "text": "Restaurant",
+      "bold": true,
+      "x": "50%",
+      "y": "15%",
+      "size": "25",
+      "align": "middle"
+      }],
+      "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+          var chart = event.chart;
+          if (event.dataItem.dataContext.id != undefined) {
+            selected = event.dataItem.dataContext.id;
+
+          } else {
+            selected = undefined;
+          }
+          chart.dataProvider = generateChartData(chart11types); //use the second chart's data
+          chart.validateData();
+
+        }
+      }],
+      "export": {
+        "enabled": true
+
+      }
+    });
+
+  </script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "blog/base.html" %}
+{% block mainblock %}
+
+<div style="margin-left:100px">
+    <h3 class="h3_Body" style="margin-bottom: 25px;">Positive Reviews</h3>
+
+
+    {% for post in dizi %}
+            <article class="media content-section" style="background-color: #D5F5C9; border: 3px solid green;margin-right: 10px;" >
+            <p  class="article-content"> {{ post }} </span></p>
+        </article>
+
+    {% endfor %}
+    <p id="demo1">  aa  </p>
+
+    </div>
+
+    <script>
+
+
+    </script>
+
+{% endblock %}
+
+
+
+

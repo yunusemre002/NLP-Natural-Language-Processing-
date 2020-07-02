@@ -1,0 +1,152 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <style>
+        .loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+            top: 62%;
+            left: 42%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            display:none;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        .button5 {
+          background-color: #F5D41E;
+          border: none;
+          color: rgb(0, 0, 0);
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 20px;
+          margin: 4px 2px;
+          cursor: pointer;
+          font-family:verdana;
+          margin-bottom: 50px;
+          border-radius: 10px;
+        }
+        
+        .centerize {
+            text-align: center;
+        }
+ 
+        .genel {
+            margin-top: 80px;
+        } 
+
+        .form-control{
+            size:"4";
+            margin-top: 15px;
+        }
+
+        .loading {
+            border: 2px solid #ccc;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border-top-color: #1ecd97;
+            border-left-color:  #1ecd97;
+            animation: spin 1s infinite ease-in;
+        }
+
+        #num1{
+            height: 100px; 
+            text-align: center;
+            margin-top: 50px; 
+            margin-bottom: 50px;  
+            background-color:#1CE882; 
+            font-weight: bold; 
+            font-size: large;
+        }
+
+        #please{
+            color: #f3f3f3; 
+            margin:auto; 
+            font-weight: bold;
+            background-color: #00A7FF;  
+            border-radius: 4px;
+        }
+
+        @keyframes spin {
+          0% {
+              transform: rotate(0deg);
+          }
+          100% {
+              transform: rotate(360deg);
+          }
+        }
+    </style>
+
+    <div class="genel">
+        <div>
+            <p id='please'>&nbsp;&nbsp; Please choose a hotel </p>
+        </div>
+        <div>
+            <select id="singleSelectTextDDJS" class="form-control" onchange="singleSelectChangeText()">
+                <option value="0" selected>Hotels</option>
+                {%for i in hotel_names %}
+                    <option value="0">{{i}}</option> 
+                {% endfor %}
+            </select>
+        </div>
+        <form action="grafik/" method="POST">
+            {% csrf_token %}
+            <input type="text"  id="num1" name="num1" class="form-control" readonly >
+            <div class="centerize" >
+                <button id="btn" class="button5" onClick="createDiv()" >Analysis</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function singleSelectChangeText() {
+            var selObj = document.getElementById("singleSelectTextDDJS");
+            var selValue = selObj.options[selObj.selectedIndex].text;
+            num1 = selValue
+            document.getElementById("num1").value = selValue;
+        }
+
+        function createDiv() {
+            var div = document.createElement('div');
+            document.getElementById('graf').style.display = "block";
+            document.getElementById('btn').style.display = "none";
+            document.body.appendChild(div);
+        }
+
+        function spinner() {
+            const spinnerDisplayer = document.querySelector('.spinner-displayer');
+            const btn = document.getElementById('btn');
+
+            btn.addEventListener('click', () => {
+                spinnerDisplayer.classList.add('loading');
+            })
+        }
+
+        spinner();
+    </script>
+
+{% endblock content %}
+
+{% block hotelRatingPart %}
+    {% include 'blog/partial/p_hotelRating.html' %}
+{% endblock %}
+
+
+
