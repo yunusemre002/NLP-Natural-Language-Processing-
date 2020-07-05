@@ -5,12 +5,12 @@ import seaborn as sn
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
 """
-1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  önemli
+1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  önemli 
 """
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Bitirme_projesi/DataSets/London.csv", encoding = "ISO-8859-1")   # read data   !!!!!
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data   !!!!!
 reviews_df_com = reviews_df[['Review Text','Review Rating']]
 reviews_df_com = reviews_df_com.dropna().copy() # boş yorum varsa kaldırır.
-reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
+#reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
 print(reviews_df_com.count() , reviews_df_com.describe(), sep="\n")
 
 
@@ -43,7 +43,7 @@ def clean_text(text):
     text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
     text = [t for t in text if len(t) > 1]     # remove words with only one letter
     text = " ".join(text)
-    print(text)
+    #print(text)
     return (text)
 #------------------------------------------------SENTİMENT ANALYSES---------------------------------------------------
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
@@ -52,7 +52,7 @@ def sentiment_scores(sentence):
     sid_obj = SentimentIntensityAnalyzer()    # Create a SentimentIntensityAnalyzer object.
     score = sid_obj.polarity_scores(sentence)
     NewValue = (((score["compound"] - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0
-    print("Overall sentiment dictionary is : ", score, " Yeni :", NewValue, end="")
+    #print("Overall sentiment dictionary is : ", score, " Yeni :", NewValue, end="")
     return score["compound"]
 
 if __name__ == "__main__":
@@ -63,9 +63,9 @@ if __name__ == "__main__":
     for t in range(len(reviews_df_com)):
         i = str(reviews_df_com['Review Text'].values[t])
         real = int(reviews_df_com['Review Rating'].values[t])
-        print("\n", i)
+        #print("\n", i)
         sonuc = sentiment_scores(i) #sentiment_scores(clean_text(i))
-        print("   Raiting", real)
+        #print("   Raiting", real)
         sonucNolmal5= (((sonuc - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0
         predict.append(round(sonucNolmal5))
 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             basarili += 1
         elif ((real >= 2.7) and (sonucNolmal5 >= 2.7)):  # Nötr
             basarili += 1
-        elif ((real < 2.7) and (sonucNolmal5 < 2.7)):  # Negative
+        elif ((real < 2.7) and (sonucNolmal5 < 2.7)):    # Negative
             basarili += 1
         else:
             basarisiz += 1
@@ -92,5 +92,5 @@ if __name__ == "__main__":
 #--------------------- PLOT2---------------------------------------------
     cm = confusion_matrix(realDizi, predict)
     df_cm = pd.DataFrame(cm, range(5), range(5))
-    sn.heatmap(df_cm, annot=True, annot_kws={"size": 11})  # font size
+    sn.heatmap(df_cm, annot=True, annot_kws={"size": 20})  # font size
     plt.show()
