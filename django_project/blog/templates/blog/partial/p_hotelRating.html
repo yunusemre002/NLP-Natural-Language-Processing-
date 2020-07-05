@@ -51,8 +51,8 @@
 <div class="content-section" style="width: 110%;">
     <header>
         <h2 id='hotel-name-place'  style="display: inline-block;">
-            {% if array1 %}
-                {{array1}}
+            {% if hotelname %}
+                {{hotelname}}
             {% else %}
                 Hotel Name
             {% endif %}
@@ -195,10 +195,10 @@
     </div>
 </div>
 
-<script>
+<script> 
 
     var x = document.getElementById("hotel-name-place").value;
-    if ("{{array1}}"){
+    if ("{{hotelname}}"){
         var array2= {{ array2 }};
         document.getElementById("but").innerHTML =  array2[13];
         document.getElementById("1s").innerHTML = array2[2];
