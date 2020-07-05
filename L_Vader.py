@@ -25,7 +25,7 @@ isim = input("Please enter hotel name?")
 reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
 #reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
 
-extraColumnName = ["Tag", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+extraColumnName = ["Tag", "vaderStar", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 for index, columnName in enumerate(extraColumnName):
     reviews_df_com.insert((index+2), columnName, 0, True)
 # ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 15 column.
@@ -91,6 +91,9 @@ if __name__ == "__main__":
         i = str(reviews_df_com['Review Text'].values[t])        # Take just reviews to String : i
         sonuc = sentiment_scores(i)     # İlgili yorumu i dizisine aldık şimdi yorumu SA yaptırıyoruz sonuçta compound dönüyor.
         #sentiment_scores(clean_text(i))
+        sonucNolmal5 = round((((sonuc - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0)
+        reviews_df_com['vaderStar'].values[t] = sonucNolmal5
+
 
         # given compound put in variable which name is sonuc then we will decide the review is positive, negtive
         # or notr. After we decide that, we set the "tag" columns like decided.
@@ -126,7 +129,7 @@ if __name__ == "__main__":
         dfnotr = len(df1[df1["Tag"] == 0])
 
 
-        sumRating = df1['Review Rating'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
+        sumRating = df1['vaderStar'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
         count = len(df1.index)
         avgRating = format(sumRating/count, '.4f')
 
