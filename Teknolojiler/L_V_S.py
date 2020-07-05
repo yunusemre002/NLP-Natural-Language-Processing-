@@ -20,12 +20,14 @@ print(len(adjList))
 # 1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  # Important!
 reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data !!!!!
 
-print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
-isim = input("Please enter hotel name?")
-reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
-# reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
+# print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
+# isim = input("Please enter hotel name?")
+# reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
+reviews_df_com = reviews_df[(reviews_df['Property Name'] == 'A To Z Hotel')][['Review Text','Review Rating', 'Property Name']]
 
-extraColumnName = ["Tag", "vaderStar", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+#reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
+
+extraColumnName = ["Tag", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 for index, columnName in enumerate(extraColumnName):
     reviews_df_com.insert((index+2), columnName, 0, True)
 # ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 15 column.
@@ -99,8 +101,6 @@ if __name__ == "__main__":
         i = str(reviews_df_com['Review Text'].values[t])        # Take just reviews to String : i
         sonuc = sentiment_scores(i)     # İlgili yorumu i dizisine aldık şimdi yorumu SA yaptırıyoruz sonuçta compound dönüyor.
         #sentiment_scores(clean_text(i))
-        sonucNolmal5 = round((((sonuc - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0)
-        reviews_df_com['vaderStar'].values[t] = sonucNolmal5
 
         # given compound put in variable which name is sonuc then we will decide the review is positive, negtive
         # or notr. After we decide that, we set the "tag" columns like decided.
@@ -128,15 +128,18 @@ if __name__ == "__main__":
 
     print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
 
-    countGeneral = len(reviews_df_com.index)
-    sumRatingGeneral = reviews_df_com['vaderStar'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-    avgRatingGeneral = float(format(sumRatingGeneral / countGeneral, '.4f'))
-    sumRatingUserGeneral = reviews_df_com['Review Rating'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-    avgRatingUserGeneral = float(format(sumRatingUserGeneral / countGeneral, '.4f'))
-    # avgRatingUserGeneral = 4.52
-    print(Fore.YELLOW + "Avg Rating - Vader:{} User :{} Vader-User :{}".format(avgRatingGeneral, avgRatingUserGeneral,
-                                                                             format(avgRatingGeneral - avgRatingUserGeneral, '.4f')))
-    print()
+    posGeneraldf = reviews_df_com.loc[reviews_df_com['Tag'] == 1]
+    negGeneraldf= reviews_df_com.loc[reviews_df_com['Tag'] == -1]
+    notrGeneraldf = reviews_df_com.loc[reviews_df_com['Tag'] == 0]  # select
+    posGeneral = posGeneraldf['Review Text'].values.tolist()  # convert df to list
+    negGeneral = negGeneraldf['Review Text'].values.tolist()
+    notrGeneral = notrGeneraldf['Review Text'].values.tolist()
+    print(colored(posGeneral, "blue"))
+    print(colored(negGeneral, 'green'))
+    print(colored(notrGeneral, 'yellow'))
+
+
+
 
     for i in attributes:
         df1 = reviews_df_com[reviews_df_com[i] == 1]    # Take just wanted attributes reviews into df1.
@@ -145,16 +148,13 @@ if __name__ == "__main__":
         dfneg = len(df1[df1["Tag"] == -1])
         dfnotr = len(df1[df1["Tag"] == 0])
 
+
+        sumRating = df1['Review Rating'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
         count = len(df1.index)
-        sumRating = df1['vaderStar'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
-        avgRating = float(format(sumRating/count, '.4f'))
+        avgRating = format(sumRating/count, '.4f')
 
-        sumRatingUser = df1['Review Rating'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-        avgRatingUser = float(format(sumRatingUser / count, '.4f'))
-
-        print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index), " rewiew is relevant. ", end="")
-        print(Fore.BLUE + "Avg Rating - Vader:{} User :{} Vader-User :{}".format(avgRating, avgRatingUser, format(avgRating-avgRatingUser, '.4f')))
-
+        print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index),
+              " rewiew is relevant." , Fore.BLUE + "Avarage Rating:",avgRating )
         print(Fore.GREEN  +  " + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
         print(Fore.YELLOW +  " 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
         print(Fore.RED    +  " - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
@@ -171,8 +171,9 @@ if __name__ == "__main__":
 
     #----------------------- Print reviews colorful --------------
     print(attributes)
-    look = look1 = input("Please, chose wanted review from above?")     # Take attributes name
+    #look = look1 = input("Please, chose wanted review from above?")     # Take attributes name
                                                                         # look will pointer to point list of wanted word
+    look = look1 = 'room'
     if look == 'hotel': look = hotel                                    # look1 will use to divide dataFrame
     elif look == 'staff': look = staff                                  # look = wanted list
     elif look == 'location': look = loc
@@ -188,14 +189,28 @@ if __name__ == "__main__":
 
     df2 = reviews_df_com[reviews_df_com[look1] == 1]                        # Divide just wanted department
     print(len(df2.index))
-    for index, i in enumerate(df2['Review Text']):                          # Take review
-        print(index, end='. ')
-        i = word_tokenize(i)                                                # Tokenize review
-        for t in i:                                                         # Take each token word
-            if t in look:                                                   # if token word is one of the attributes
-                print(colored(t, 'blue'), end=' ')                          # print blue
-            elif t in adjList:                                              # Token is adjective, so if it is in adjactives.csv
-                print(colored(t, 'green'), end=' ')                         # print green
-            else:
-                print(t, end=' ')                                           # any of above print token word like normal.
-        print()
+
+    # positiveAttdf = df2.loc[df2['Tag'] == 1]
+    # negativeAttdf = df2.loc[df2['Tag'] == -1]
+    # notrAttdf = df2.loc[df2['Tag'] == 0]                                    # select
+    # positiveAtt = positiveAttdf['Review Text'].values.tolist()              # convert df to list
+    # negativeAtt = negativeAttdf['Review Text'].values.tolist()
+    # notrAtt = notrAttdf['Review Text'].values.tolist()
+    # print(colored(positiveAtt, "blue"))
+    # print(colored(negativeAtt, 'green'))
+    # print(colored(notrAtt, 'yellow'))
+
+        # i = word_tokenize(i)                                                # Tokenize review
+        # for t in i:                                                         # Take each token word
+        #     if t in look:                                                   # if token word is one of the attributes
+        #         print(colored(t, 'blue'), end=' ')                          # print blue
+        #     elif t in adjList:                                              # Token is adjective, so if it is in adjactives.csv
+        #         print(colored(t, 'green'), end=' ')                         # print green
+        #     else:
+        #         print(t, end=' ')                                           # any of above print token word like normal.
+        # print()
+
+
+
+
+
