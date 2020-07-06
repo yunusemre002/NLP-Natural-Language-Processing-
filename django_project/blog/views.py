@@ -1,41 +1,20 @@
 from django.shortcuts import render
-# from django.http import HttpResponse neden gerek kalmadı?
 from .models import Post
 from nltk import word_tokenize
 from termcolor import colored
-import csv, json
+import csv, json, csv
 import pandas as pd
 from .models import Page
-from colorama import Fore, Back, Style
-import csv
-import matplotlib.pyplot as plt
-
-class bcolors:
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    ENDC = '\033[0m'
-
-postsaaa = [
-    {'author': 'CoreyMS','title': 'Blog Post 1','content': 'First post content','date_posted': 'August 27, 2018'},
-    {'author': 'Jane Doe','title': 'Blog Post 2','content': 'Second post content','date_posted': 'August 28, 2018'}]
 
 x=[]
-global run1
-run1=0
-y=[]
 scores=[]
 counts=[]
 dizim=[]
 dizim2=[]
 kats=[]
-posGeneral= []
-negGeneral= []
-notrGeneral=[]
 posG= []
 negG= []
 notrG=[]
-hotelname = []  # otel ismi
 positiveAttdf = []
 positiveAtt = []
 positive = []
@@ -49,13 +28,11 @@ notr=[]
 
 df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # read data !!!!!
 
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data !!!!!
-
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")
 with open("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  as f:
     reader = csv.reader(f)  # Read adjactives list from csv
     data = list(reader)     # output: list of list, each row is a list which is in list.
 adjList = sum(data, [])     # list of list convert to list of string.
-
 
 
 def home(request):
@@ -64,7 +41,6 @@ def home(request):
     x.clear()
     scores.clear()
     counts.clear()
-    hotelname.clear()
     kats.clear()
 
     hotel_names = reviews_df['Property Name'].unique()
@@ -109,20 +85,19 @@ def grafik(request):
                     reviews_df_com[colName].values[t] = 1
 
         k = sonuc = posNumber = negNumber = notrNumber = chartpos = chartneg = 0
-        attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food",
-                      "restaurant"]
+        attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
-        hotel = ["hotel", "otel", "motel", "hotels", 'accommodation']
-        staff = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
-        loc = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
-        room = ["room", 'bedroom', 'rooom', 'roooms']
+        hotel     = ["hotel", "otel", "motel", "hotels", 'accommodation']
+        staff     = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
+        loc       = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
+        room      = ["room", 'bedroom', 'rooom', 'roooms']
         breakfast = ["breakfast", 'breackfast', 'breakfeast', 'breakfats', 'brekfast', 'breakfest', 'bfast']
-        bed = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
-        service = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
-        bath = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
-        view = ["view", 'overlook', 'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
-        food = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
-        rest = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
+        bed       = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
+        service   = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
+        bath      = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
+        view      = ["view", 'overlook', 'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
+        food      = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
+        rest      = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
 
         # ------------------------------ Vader -----------------------------------------
         for t in range(len(reviews_df_com)):  # iterate for each object
@@ -139,7 +114,6 @@ def grafik(request):
             else:  # Negative // sonuc < -0.05
                 reviews_df_com['Tag'].values[t] = -1
                 chartneg += 1
-                # print(colored(i, 'red'), sonuc)
 
             findSubject(hotel, t)
             findSubject(staff, t)
@@ -186,12 +160,10 @@ def grafik(request):
                 avgRating=0
 
             # print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index),
-            #             " rewiew is relevant." , Fore.BLUE + "Avarage Rating:",avgRating )
-            # print(Fore.GREEN  +  " + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
-            # print(Fore.YELLOW +  " 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
-            # print(Fore.RED    +  " - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
-            # print(Style.RESET_ALL)
-            # print()
+            #             " rewiew is relevant." , "Avarage Rating:",avgRating )
+            # print(" + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
+            # print(" 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
+            # print(" - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
 
             scores.append(round(float(avgRating),1))
             counts.append(len(reviews_df_com[reviews_df_com[i] == 1]))
