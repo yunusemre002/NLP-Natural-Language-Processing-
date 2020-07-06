@@ -24,7 +24,7 @@ negative = []
 notrAttdf = []
 notrAtt = []
 notr=[]
-
+hotelnames = []
 
 df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # read data !!!!!
 
@@ -34,6 +34,9 @@ with open("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding 
     data = list(reader)     # output: list of list, each row is a list which is in list.
 adjList = sum(data, [])     # list of list convert to list of string.
 
+# TXT'den alınacak W2V ve Fasttext'ten gelecek olan attributelerin benzerleriokunuyor alttaki iki satırda.
+outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/myOutFile.txt", "r")
+listOfAttribute = outF.readlines()
 
 def home(request):
     posG.clear()
@@ -42,6 +45,7 @@ def home(request):
     scores.clear()
     counts.clear()
     kats.clear()
+    hotelnames.clear()
 
     hotel_names = reviews_df['Property Name'].unique()
     context = {
@@ -54,7 +58,6 @@ def grafik(request):
     if not x:
         val1 = (request.POST['num1'])
         isim = val1
-        print(val1)
 
         reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text', 'Review Rating', 'Property Name']]
         extraColumnName = ["Tag", "vaderStar", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view",
@@ -73,13 +76,13 @@ def grafik(request):
         from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
         def sentiment_scores(sentence):
-            sid_obj = SentimentIntensityAnalyzer()  # Create a SentimentIntensityAnalyzer object.
+            sid_obj = SentimentIntensityAnalyzer()              # Create a SentimentIntensityAnalyzer object.
             score = sid_obj.polarity_scores(sentence)
             return score["compound"]
 
         # it doesn't matter whether the words are in sentence, or sentence is contains the words.
-        def findSubject(dizi, t):   # This function searchs that does the review has got input word or not.
-            colName = str(dizi[0])  # if there is (any), set this column to 1
+        def findSubject(dizi, t):               # This function searchs that does the review has got input word or not.
+            colName = str(dizi[0])              # if there is (any), set this column to 1
             for i in dizi:
                 if i in reviews_df_com['Review Text'].values[t]:  # t : ilgili yorumun indisi sadece bir yoruma bakıyor
                     reviews_df_com[colName].values[t] = 1
@@ -87,33 +90,46 @@ def grafik(request):
         k = sonuc = posNumber = negNumber = notrNumber = chartpos = chartneg = 0
         attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
-        hotel     = ["hotel", "otel", "motel", "hotels", 'accommodation']
-        staff     = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
-        loc       = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
-        room      = ["room", 'bedroom', 'rooom', 'roooms']
-        breakfast = ["breakfast", 'breackfast', 'breakfeast', 'breakfats', 'brekfast', 'breakfest', 'bfast']
-        bed       = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
-        service   = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
-        bath      = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
-        view      = ["view", 'overlook', 'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
-        food      = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
-        rest      = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
+        # # Bunları W2V and Fasttex ile genişleteceğiz.
+        hotel     = listOfAttribute[0].split(",")
+        staff     = listOfAttribute[1].split(",")
+        loc       = listOfAttribute[2].split(",")
+        room      = listOfAttribute[3].split(",")
+        breakfast = listOfAttribute[4].split(",")
+        bed       = listOfAttribute[5].split(",")
+        service   = listOfAttribute[6].split(",")
+        bath      = listOfAttribute[7].split(",")
+        view      = listOfAttribute[8].split(",")
+        food      = listOfAttribute[9].split(",")
+        rest      = listOfAttribute[10].split(",")
+        
+        # hotel     = ["hotel", "otel", "motel", "hotels", 'accommodation']
+        # staff     = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
+        # loc       = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
+        # room      = ["room", 'bedroom', 'rooom', 'roooms']
+        # breakfast = ["breakfast", 'breackfast', 'breakfeast', 'breakfats', 'brekfast', 'breakfest', 'bfast']
+        # bed       = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
+        # service   = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
+        # bath      = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
+        # view      = ["view", 'overlook', 'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
+        # food      = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
+        # rest      = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
+
+        allAttributes = hotel + staff + loc + room + breakfast + bed + service + bath + view + food + rest
 
         # ------------------------------ Vader -----------------------------------------
-        for t in range(len(reviews_df_com)):  # iterate for each object
-            i = str(reviews_df_com['Review Text'].values[t])  # Take just reviews to String : i
+        for t in range(len(reviews_df_com)):                     # iterate for each object
+            i = str(reviews_df_com['Review Text'].values[t])     # Take just reviews to String : i
             sonuc = sentiment_scores(i)  # İlgili yorumu i dizisine aldık şimdi yorumu SA yaptırıyoruz sonuçta compound dönüyor.
             sonucNolmal5 = round((((sonuc - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0)
             reviews_df_com['vaderStar'].values[t] = sonucNolmal5
 
-            if sonuc > 0.05:  # Positive
+            if sonuc > 0.05:                            # Positive
                 reviews_df_com['Tag'].values[t] = 1
-                chartpos += 1
-            elif sonuc > -0.05:  # Nötr
+            elif sonuc > -0.05:                         # Nötr
                 reviews_df_com['Tag'].values[t] = 0
-            else:  # Negative // sonuc < -0.05
+            else:                                       # Negative // sonuc < -0.05
                 reviews_df_com['Tag'].values[t] = -1
-                chartneg += 1
 
             findSubject(hotel, t)
             findSubject(staff, t)
@@ -127,8 +143,9 @@ def grafik(request):
             findSubject(food, t)
             findSubject(rest, t)
 
-        x.append(chartpos)    # İlk 
-        x.append(chartneg)
+        x.append(len(reviews_df_com[reviews_df_com['Tag'] ==  1]))   # total positive of hotel review
+        x.append(len(reviews_df_com[reviews_df_com['Tag'] == -1]))   # total negative of hotel review
+
         # print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
         
         posGeneraldf = reviews_df_com.loc[reviews_df_com['Tag'] == 1]
@@ -138,19 +155,19 @@ def grafik(request):
         negGeneral = negGeneraldf['Review Text'].values.tolist()
         notrGeneral = notrGeneraldf['Review Text'].values.tolist()
         
-        for k in range(len(posGeneral)):
-            posG.append(posGeneral[k])
-        for l in range(len(notrGeneral)):
-            notrG.append(notrGeneral[l])
-        for m in range(len(negGeneral)):
-            negG.append(negGeneral[m])
+        for k in posGeneral:
+            posG.append(k)
+        for l in notrGeneral:
+            notrG.append(l)
+        for m in negGeneral:
+            negG.append(m)
         
         for i in attributes:
             df1 = reviews_df_com[reviews_df_com[i] == 1]  # Take just wanted attributes reviews into df1.
             # (All column is still exist. Just irrelevant row delete.)
-            dfpos = len(df1[df1["Tag"] == 1])  # The number of pos, neg and notr are calculated.
-            dfneg = len(df1[df1["Tag"] == -1])
-            dfnotr = len(df1[df1["Tag"] == 0])
+            dfpos  = len(df1[df1["Tag"] ==  1])  # The number of pos, neg and notr are calculated.
+            dfneg  = len(df1[df1["Tag"] == -1])
+            dfnotr = len(df1[df1["Tag"] ==  0])
 
             sumRating = df1['vaderStar'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
             count = len(df1.index)
@@ -173,6 +190,7 @@ def grafik(request):
         global df3
         df3 = pd.DataFrame(None)
         df3=reviews_df_com.copy()
+
         # Eşlenik toplamı
         for i in range(len(scores)):        #x[0] basarili x[1] basarisiz x[2]-x[12] kategori puanları
             x.append(scores[i])
@@ -184,17 +202,12 @@ def grafik(request):
         ort=round(ort/rev_count,2)
         x.append(ort)                   # x[13]
 
-        hotelname = val1
-
-        context = {
-            'hotelname': hotelname,
-            'array2': x
-        }
+        hotelnames.append(val1)
 
     else:
         print("a")
 
-    return render(request, ['blog/grafik.html', 'blog/p_hotelRating.html'], context)
+    return render(request, ['blog/grafik.html', 'blog/p_hotelRating.html'], {'hotelnames': hotelnames, 'array2': x})
 
 
 def kategoriler(request):
@@ -259,3 +272,4 @@ def attArama(attName):
     c=0
     return c
 
+outF.close()

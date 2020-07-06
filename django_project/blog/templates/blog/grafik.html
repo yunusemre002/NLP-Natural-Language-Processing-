@@ -12,8 +12,11 @@
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
     <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-           
-    <h3 class="h3_Body" id="bas">{{hotelname}}</h3>
+          
+    {% for post in hotelnames %}
+      <h3 class="h3_Body" id="bas">{{ post }}</h3>
+    {% endfor %}
+    
     <div id="chartdiv"> </div>
 
     <script>
