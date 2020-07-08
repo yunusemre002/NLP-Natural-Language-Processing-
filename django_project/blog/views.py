@@ -26,7 +26,7 @@ notrAtt = []
 notr=[]
 hotelnames = []
 
-df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1" ,  nrows = 1 )  # read data !!!!!
+df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1" )  # read data !!!!!
 
 reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")
 with open("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  as f:
@@ -216,7 +216,12 @@ def kategoriler(request):
 def yorumlar(request):
     print(posG[0])
     print(negG[0])
-    return render(request, 'blog/yorumlar.html',{'dizi':posG,'mizi':negG})
+    semih = []
+    xx = "location"
+    yy = "good"
+    semih.append(xx)
+    semih.append(yy)
+    return render(request, 'blog/yorumlar.html',{'dizi':posG,'mizi':negG, 'semih': semih})
 
 def yorumlarhotel(request):
     d=attArama("hotel")

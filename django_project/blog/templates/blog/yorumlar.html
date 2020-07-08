@@ -6,6 +6,15 @@
         display: none;
     }
 
+
+    .red{
+        color: #ff0130;
+    }
+
+    .green{
+        color: #0734ff;
+    }
+
     #myBtn {
         position: fixed;
         bottom: 20px;
@@ -51,16 +60,15 @@
 
     {% for post in dizi %}
             <article class="media content-section" style="background-color: #D5F5C9; border: 3px solid green;margin-right: 10px;" >
-            <p  class="article-content show-read-more"> {{ post }} </span></p>
+            <p  class="article-content show-read-more"> {{ post }} </p>
         </article>
 
     {% endfor %}
         <a id="neg"></a>
     {% for ali in mizi %}
             <article class="media content-section" style="background-color: #FAA1B1; border: 3px solid red;margin-right: 10px;" >
-            <p  class="article-content show-read-more"> {{ ali }} </span></p>
+            <p  class="article-content show-read-more"> {{ ali }} </p>
         </article>
-
     {% endfor %}
     <p id="demo1"> ...</p>
 
@@ -68,16 +76,35 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
+    // var semih = {{ semih }};
+    var semih = ['hotel', 'location', 'are', 'staff', 'very']
+    var yunus = ['is', 'good']
+
     $(document).ready(function(){
-        var maxLength = 440;
+        var maxLength = 410;
         $(".show-read-more").each(function(){
-            var myStr = $(this).text();
+            const words = $(this).text().split(' ');
+            var myStr = "";
+            words.forEach(word => {
+                if(semih.find(sem => sem === word.toLocaleLowerCase() )){
+                    myStr += `<span class="red">${word}</span> `
+                } 
+                else if(yunus.find(yun => yun === word.toLocaleLowerCase() )) {
+                    myStr += `<span class="green">${word}</span> `
+                }else{
+                    myStr += word + ' ';
+                }
+            });
+
             if($.trim(myStr).length > maxLength){
                 var newStr = myStr.substring(0, maxLength);
                 var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
                 $(this).empty().html(newStr);
                 $(this).append('<a href="javascript:void(0);" class="read-more">read more...</a>');
                 $(this).append('<span class="more-text">' + removedStr + '</span>');
+            }
+            else{
+                $(this).empty().html(myStr);
             }
         });
         $(".read-more").click(function(){
