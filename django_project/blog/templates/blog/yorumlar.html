@@ -57,7 +57,7 @@
     <a href="#neg">
     <button id="myBtn" title="Go to top">Neg</button></a>
     <button onclick="topFunction()" id="myBtn2" title="Go to top">Top</button>
-
+    
     {% for post in dizi %}
             <article class="media content-section" style="background-color: #D5F5C9; border: 3px solid green;margin-right: 10px;" >
             <p  class="article-content show-read-more"> {{ post }} </p>
@@ -79,6 +79,9 @@
     // var semih = {{ semih }};
     var semih = ['hotel', 'location', 'are', 'staff', 'very']
     var yunus = ['is', 'good']
+    // var adjListStr = '{{adjListStr}}'.split('*-');
+    var allAttributesStr = '{{allAttributesStr}}'.split('*-');
+    var attributesStr = '{{attributesStr}}'.split('*-');
 
     $(document).ready(function(){
         var maxLength = 410;
@@ -89,9 +92,13 @@
                 if(semih.find(sem => sem === word.toLocaleLowerCase() )){
                     myStr += `<span class="red">${word}</span> `
                 } 
-                else if(yunus.find(yun => yun === word.toLocaleLowerCase() )) {
+                else if(attributesStr.find(yun => yun === word.toLocaleLowerCase() )) {
                     myStr += `<span class="green">${word}</span> `
-                }else{
+                }
+                // else if(adjListStr.find(adj => adj === word.toLocaleLowerCase() )) {
+                //     myStr += `<span class="green">${word}</span> `
+                // }
+                else{
                     myStr += word + ' ';
                 }
             });

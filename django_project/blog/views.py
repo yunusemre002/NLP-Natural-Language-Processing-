@@ -25,6 +25,8 @@ notrAttdf = []
 notrAtt = []
 notr=[]
 hotelnames = []
+allAttributesStr = ''
+
 
 df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1" )  # read data !!!!!
 
@@ -33,10 +35,19 @@ with open("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding 
     reader = csv.reader(f)  # Read adjactives list from csv
     data = list(reader)     # output: list of list, each row is a list which is in list.
 adjList = sum(data, [])     # list of list convert to list of string.
+adjListStr = '*-'.join([str(i) for i in adjList])
 
-# TXT'den alınacak W2V ve Fasttext'ten gelecek olan attributelerin benzerleriokunuyor alttaki iki satırda.
-outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/myOutFile.txt", "r")
+
+# TXT'den alınacak W2V ve Fasttext'ten gelecek olan attributelerin benzerleri okunuyor alttaki iki satırda.
+outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/inputs/myOutFile.txt", "r")
 listOfAttribute = outF.readlines()
+
+# ---------------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------------------
+# attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
+outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/inputs/attributes.txt", "r")
+attributes = outF.readlines()  # Taking a str and put it in list[0] so we parse it from ,
+attributes = attributes[0].split(",")  # Convert attributes to list.
+
 
 def home(request):
     posG.clear()
@@ -60,8 +71,9 @@ def grafik(request):
         isim = val1
 
         reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text', 'Review Rating', 'Property Name']]
-        extraColumnName = ["Tag", "vaderStar", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view",
-                           "food", "restaurant"]
+        
+        attributesChart = attributes
+        extraColumnName = ["Tag", "vaderStar"] + attributesChart
         for index, columnName in enumerate(extraColumnName):
             reviews_df_com.insert((index + 2), columnName, 0, True)
         # ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 15 column.
@@ -88,34 +100,15 @@ def grafik(request):
                     reviews_df_com[colName].values[t] = 1
 
         k = sonuc = posNumber = negNumber = notrNumber = chartpos = chartneg = 0
-        attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+      
+        attMatrix = [[] for _ in range(len(attributesChart))]  # Create len(attributes) different list in list *important! write like this!
 
-        # # Bunları W2V and Fasttex ile genişleteceğiz.
-        hotel     = listOfAttribute[0].split(",")
-        staff     = listOfAttribute[1].split(",")
-        loc       = listOfAttribute[2].split(",")
-        room      = listOfAttribute[3].split(",")
-        breakfast = listOfAttribute[4].split(",")
-        bed       = listOfAttribute[5].split(",")
-        service   = listOfAttribute[6].split(",")
-        bath      = listOfAttribute[7].split(",")
-        view      = listOfAttribute[8].split(",")
-        food      = listOfAttribute[9].split(",")
-        rest      = listOfAttribute[10].split(",")
-        
-        # hotel     = ["hotel", "otel", "motel", "hotels", 'accommodation']
-        # staff     = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
-        # loc       = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
-        # room      = ["room", 'bedroom', 'rooom', 'roooms']
-        # breakfast = ["breakfast", 'breackfast', 'breakfeast', 'breakfats', 'brekfast', 'breakfest', 'bfast']
-        # bed       = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
-        # service   = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
-        # bath      = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
-        # view      = ["view", 'overlook', 'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
-        # food      = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
-        # rest      = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
+        for i in range(len(attributesChart)):             # Put attributes to matrix
+            loa = listOfAttribute[i].split(",")           # taking listOfAttribute which was created by L_W2V_file. Convert it to a list.
+            for a in loa:
+                attMatrix[i].append(a)                    # Create a matrix each row is equals to 1 attributes(and similars) of hotel.
 
-        allAttributes = hotel + staff + loc + room + breakfast + bed + service + bath + view + food + rest
+        # allAttributesStr = '*-'.join([i for i in attMatrix])
 
         # ------------------------------ Vader -----------------------------------------
         for t in range(len(reviews_df_com)):                     # iterate for each object
@@ -131,17 +124,9 @@ def grafik(request):
             else:                                       # Negative // sonuc < -0.05
                 reviews_df_com['Tag'].values[t] = -1
 
-            findSubject(hotel, t)
-            findSubject(staff, t)
-            findSubject(loc, t)
-            findSubject(room, t)
-            findSubject(breakfast, t)
-            findSubject(bed, t)
-            findSubject(service, t)
-            findSubject(bath, t)
-            findSubject(view, t)
-            findSubject(food, t)
-            findSubject(rest, t)
+
+            for i in range(len(attributesChart)):  # Each attributes send to word2vectfonc fonction to use w2v and fasttex.
+                findSubject(attMatrix[i], t)
 
         x.append(len(reviews_df_com[reviews_df_com['Tag'] ==  1]))   # total positive of hotel review
         x.append(len(reviews_df_com[reviews_df_com['Tag'] == -1]))   # total negative of hotel review
@@ -162,7 +147,7 @@ def grafik(request):
         for m in negGeneral:
             negG.append(m)
         
-        for i in attributes:
+        for i in attributesChart:
             df1 = reviews_df_com[reviews_df_com[i] == 1]  # Take just wanted attributes reviews into df1.
             # (All column is still exist. Just irrelevant row delete.)
             dfpos  = len(df1[df1["Tag"] ==  1])  # The number of pos, neg and notr are calculated.
@@ -175,12 +160,6 @@ def grafik(request):
                 avgRating = format(sumRating / count, '.4f')
             else:
                 avgRating=0
-
-            # print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index),
-            #             " rewiew is relevant." , "Avarage Rating:",avgRating )
-            # print(" + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
-            # print(" 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
-            # print(" - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
 
             scores.append(round(float(avgRating),1))
             counts.append(len(reviews_df_com[reviews_df_com[i] == 1]))
@@ -207,21 +186,18 @@ def grafik(request):
     else:
         print("a")
 
-    return render(request, ['blog/grafik.html', 'blog/p_hotelRating.html'], {'hotelnames': hotelnames, 'array2': x})
+    return render(request, ['blog/grafik.html', 'blog/p_hotelRating.html'], {'hotelnames': hotelnames, 'array2': x })
 
 
 def kategoriler(request):
     return render(request, 'blog/kategoriler.html',{'array2': kats})
 
 def yorumlar(request):
-    print(posG[0])
-    print(negG[0])
-    semih = []
-    xx = "location"
-    yy = "good"
-    semih.append(xx)
-    semih.append(yy)
-    return render(request, 'blog/yorumlar.html',{'dizi':posG,'mizi':negG, 'semih': semih})
+    # print(posG[0])
+    # print(negG[0])
+    attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+    attributesStr = '*-'.join([i for i in attributes])
+    return render(request, 'blog/yorumlar.html',{'dizi':posG,'mizi':negG, 'adjListStr': adjListStr, 'allAttributesStr' : allAttributesStr, 'attributesStr' : attributesStr})
 
 def yorumlarhotel(request):
     d=attArama("hotel")
