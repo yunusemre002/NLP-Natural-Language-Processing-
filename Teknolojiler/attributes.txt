@@ -1,0 +1,1 @@
+hotel,staff,location,room,breakfast,bed,service,bathroom,view,food,restaurant

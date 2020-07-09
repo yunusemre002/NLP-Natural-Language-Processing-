@@ -1,5 +1,5 @@
 import pandas as pd
-from nltk import word_tokenize
+from nltk import word_tokenize, pprint
 from termcolor import colored
 from colorama import Fore, Back, Style
 import csv
@@ -17,15 +17,23 @@ with open("C:/Users/Demir/Desktop/Final_Project/DataSets/adjectives.csv", encodi
 adjList = sum(data, [])                     # list of list convert to list of string.
 print(len(adjList))
 
-# 1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  # Important!
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data !!!!!
+# ---------------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------------------
+# attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
+outF = open("attributes.txt", "r")
+attributes = outF.readlines()  # Taking a str and put it in list[0] so we parse it from ,
+attributes = attributes[0].split(",")  # Convert attributes to list.
+print(attributes)
 
-print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
-isim = input("Please enter hotel name?")
-reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
+# ---------------------------------------------- Open/Read CSV File-------------------------------------------------------------
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data. Important!
+# print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
+# isim = input("Please enter hotel name?")
+# reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
+reviews_df_com = reviews_df[(reviews_df['Property Name'] == 'A To Z Hotel')][['Review Text','Review Rating', 'Property Name']]
+
 # reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
 
-extraColumnName = ["Tag", "vaderStar", "hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+extraColumnName = ["Tag", "vaderStar"] + attributes
 for index, columnName in enumerate(extraColumnName):
     reviews_df_com.insert((index+2), columnName, 0, True)
 # ['My mother and myself..., 5, Hotel London, 1 0 0 0 1 0 0 1 1 0 1] DF has totally 15 column.
@@ -61,38 +69,24 @@ def findSubject(dizi,t):            # This function searchs that does the review
 
 if __name__ == "__main__":
     k = sonuc = posNumber = negNumber = notrNumber = 0
-    attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
+    # attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
-    # # #Bunları word to vect ile genişleteceğiz.
+    # ------------------- W2V and Fasttex ile genişletilmiş olan kelimeleri alacağız. ------------------
     outF = open("myOutFile1.txt", "r")
     listOfAttribute = outF.readlines()
     print(listOfAttribute)
 
-    hotel = listOfAttribute[0].split(",")
-    staff = listOfAttribute[1].split(",")
-    loc = listOfAttribute[2].split(",")
-    room = listOfAttribute[3].split(",")
-    breakfast = listOfAttribute[4].split(",")
-    bed = listOfAttribute[5].split(",")
-    service = listOfAttribute[6].split(",")
-    bath = listOfAttribute[7].split(",")
-    view = listOfAttribute[8].split(",")
-    food = listOfAttribute[9].split(",")
-    rest = listOfAttribute[10].split(",")
-    outF.close()
+    # ------------------ Create a matrix. it can be thought looks like txt. -----------------------------------------
+    attMatrix = [[] for _ in range(len(attributes))]  # Create len(attributes) different list in list *important! write like this!
+    # pprint(attMatrix)
 
-    # This outputs created by us. It is handmade but when it was created, W2V and Fasttext algorithms used (in L_W2V.pf).
-    # hotel = ["hotel", "otel", "motel", "hotels", 'accommodation']
-    # staff = ["staff", 'team', 'employee', 'everyone', 'host', 'staf', 'staffer', 'staffmember']
-    # loc = ["location", 'position', 'located', 'spot', 'locatie', 'located', 'localisation']
-    # room = ["room", 'bedroom', 'rooom', 'roooms']
-    # breakfast = ["breakfast", 'breackfast', 'breakfeast', 'breakfats', 'brekfast', 'breakfest', 'bfast']
-    # bed = ["bed", 'pillow', 'mattress', 'chair', 'bedding', 'bedsheets', 'beds']
-    # service = ["service", 'sevice', 'presentation', 'deliver', 'housekeep', 'seervice', 'roomservice', 'servicing']
-    # bath = ["bathroom", 'bathrooms', 'bath', 'bathtub', 'shower', 'tub', 'toilet', 'bathrooom', 'bathrom']
-    # view = ["view", 'overlook',  'views', 'viewing', 'vieuw', 'viewpoint', 'overview']
-    # food = ["food", 'meal', 'dish', 'menu', 'lunch', 'dinner']
-    # rest = ["restaurant", 'restaurants', 'restaruant', 'eatery', 'dining', 'restuarant', 'hotelrestaurant']
+    for i in range(len(attributes)):                  # Put attributes to matrix
+        loa = listOfAttribute[i].split(",")           # taking listOfAttribute which was created by L_W2V_file. Convert it to a list.
+        for a in loa:
+            attMatrix[i].append(a)                    # Create a matrix each row is equals to 1 attributes(and similars) of hotel.
+    # pprint(attMatrix)
+
+    outF.close()
 
     #------------------------------ Vader -----------------------------------------
     for t in range(len(reviews_df_com)):                        # iterate for each object
@@ -112,17 +106,8 @@ if __name__ == "__main__":
             reviews_df_com['Tag'].values[t] = -1
             # print(colored(i, 'red'), sonuc)
 
-        findSubject(hotel, t)
-        findSubject(staff, t)
-        findSubject(loc, t)
-        findSubject(room, t)
-        findSubject(breakfast, t)
-        findSubject(bed, t)
-        findSubject(service, t)
-        findSubject(bath, t)
-        findSubject(view, t)
-        findSubject(food, t)
-        findSubject(rest, t)
+        for i in range(len(attributes)):  # Each attributes send to word2vectfonc fonction to use w2v and fasttex.
+            findSubject(attMatrix[i], t)
 
         #print(reviews_df_com.values[t])
 
@@ -141,9 +126,9 @@ if __name__ == "__main__":
     for i in attributes:
         df1 = reviews_df_com[reviews_df_com[i] == 1]    # Take just wanted attributes reviews into df1.
                                                         # (All column is still exist. Just irrelevant row delete.)
-        dfpos = len(df1[df1["Tag"] == 1])               # The number of pos, neg and notr are calculated.
-        dfneg = len(df1[df1["Tag"] == -1])
-        dfnotr = len(df1[df1["Tag"] == 0])
+        dfpos  = len(df1[df1["Tag"] ==  1])               # The number of pos, neg and notr are calculated.
+        dfneg  = len(df1[df1["Tag"] == -1])
+        dfnotr = len(df1[df1["Tag"] ==  0])
 
         count = len(df1.index)
         sumRating = df1['vaderStar'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
@@ -172,19 +157,14 @@ if __name__ == "__main__":
     #----------------------- Print reviews colorful --------------
     print(attributes)
     look = look1 = input("Please, chose wanted review from above?")     # Take attributes name
-                                                                        # look will pointer to point list of wanted word
-    if look == 'hotel': look = hotel                                    # look1 will use to divide dataFrame
-    elif look == 'staff': look = staff                                  # look = wanted list
-    elif look == 'location': look = loc
-    elif look == 'room': look = room
-    elif look == 'breakfast': look = breakfast
-    elif look == 'bed': look = bed
-    elif look == 'service': look = service
-    elif look == 'bathroom': look = bath
-    elif look == 'view': look = view
-    elif look == 'food': look = food
-    elif look == 'restaurant': look = rest
-    else: print("Wrong choices")
+    # look will pointer to point list of wanted word. look1 will use to divide dataFrame
+
+    if attributes.index(look):
+        indis = attributes.index(look)      # look = wanted list
+        look = attMatrix[indis]
+        print(look)
+    else:
+        print("Wrong choices")
 
     df2 = reviews_df_com[reviews_df_com[look1] == 1]                        # Divide just wanted department
     print(len(df2.index))

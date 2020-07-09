@@ -1,5 +1,5 @@
 import pandas as pd
-from nltk import pos_tag, re, word_tokenize
+from nltk import pos_tag, re, word_tokenize, pprint
 from gensim.models import FastText, Word2Vec
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet, stopwords
@@ -9,7 +9,7 @@ stop_words = set(stopwords.words('english'))
 reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data !!!!
 reviews_df_com = reviews_df[['Review Text']]                                        # Remove except for  "Review Text"
 reviews_df_com = reviews_df_com.dropna().copy()                                     # Remove empty reviews ,if there is.
-#reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Take %01 of reviews.
+reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Take %01 of reviews.
 print(reviews_df_com.describe())
 
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
@@ -31,7 +31,7 @@ def clean_text(text):
     text = [x for x in text if x not in stop_words]     # remove stop words
     pos_tags = pos_tag(text)
     text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
-    # text = [WordNetLemmatizer().lemmatize(t) for t in text]                                 # Other option of lemmatizer
+    # text = [WordNetLemmatizer().lemmatize(t) for t in text]                                # Other option of lemmatizer
     text = [t for t in text if len(t) > 1]     # remove words with only one letter or empty
     return (text)
 
@@ -45,41 +45,43 @@ def word2vectfonc(kdizi, k):
     for i in range(len(dizi)):
         d.append(dizi[i][0])                                       # dizi[i] is tuple, so converted.
         d_w2v.append(dizi_w2v[i][0])
-        dizi[i][1]= format(dizi[i][1], '.4f')                    # just take .0000 (4 decimal after dot.)
+        dizi[i][1]= format(dizi[i][1], '.4f')                      # just take .0000 (4 decimal after dot.)
         dizi_w2v[i][1]= format(dizi_w2v[i][1], '.4f')
 
     print(str(k) + ". Most similar to {0}".format(kdizi), dizi)
     print(str(k) + ". Most similar to (w2v) {0}".format(kdizi), dizi_w2v)
 
     count = 0
-    outF.write(kdizi[0])
+    outF.write(kdizi)
     for line in d:
         outF.write(",")
         outF.write(str(line))
         count +=1
     for line in d_w2v:
-        if line not in d:
+        if line not in d:                           # If it wrote before, don't write
             outF.write(",")
             outF.write(str(line))
             count +=1
-        else:
-            print("  same : ", line)
+        # else:                                     # İf you want to are there any similar word you can use else: ...
+        #     print("  same : ", line)
     #outF.write(str(count))           # Can you delete it. This shows the number of word count
     outF.write("\n")
 
 if __name__ == "__main__":
-    # These lists extends using W2V and Fasttext
-    hotel = ["hotel"]
-    staff = ["staff"]
-    loc = ["location"]
-    room = ["room"]
-    breakfast = ["breakfast"]
-    bed = ["bed"]
-    service = ["service"]
-    bath = ["bathroom"]
-    view = ["view"]
-    food = ["food"]
-    rest = ["restaurant"]
+
+    # --------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------
+    # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
+    outF = open("attributes.txt", "r")
+    attributes = outF.readlines()               # Taking a str and put it in list[0] so we parse it from ,
+    attributes = attributes[0].split(",")       # Convert attributes to list.
+    print(attributes)
+
+    attMatrix = [[] for _ in range(len(attributes))]  # Create len(attributes) different list in list ** important! wirte like this!
+    #pprint(attMatrix)
+
+    for i in range(len(attributes)):                  # Put attributes to matrix 0. column m[0][0], m[1][0], m[2][0] like this.
+        attMatrix[i].append(attributes[i])
+    # pprint(attMatrix)                               # Printing good matrix
 
     #-------------------------- Preproccessing ----------------------------------
     reviews = []
@@ -98,18 +100,9 @@ if __name__ == "__main__":
     word_vectors = model.wv
     word_vectors_w2v = model_w2v.wv
 
-    outF = open("myOutFile.txt", "w+")
+    outF = open("myOutFile1.txt", "w+")
 
-    word2vectfonc(hotel, 1)
-    word2vectfonc(staff, 1)
-    word2vectfonc(loc, 2)
-    word2vectfonc(room, 3)
-    word2vectfonc(breakfast, 4)
-    word2vectfonc(bed, 5)
-    word2vectfonc(service, 6)
-    word2vectfonc(bath, 7)
-    word2vectfonc(view, 8)
-    word2vectfonc(food, 9)
-    word2vectfonc(rest, 10)
+    for i in range(len(attributes)):            # Each attributes send to word2vectfonc fonction to use w2v and fasttex.
+        word2vectfonc(attMatrix[i][0], i)
 
     outF.close()
