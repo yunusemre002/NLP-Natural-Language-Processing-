@@ -1,7 +1,7 @@
 hotel,hotels,property,accommodation,place,accomodation,establishment
-staff,staffer,staf,doorstaff,personnel,everyone,employee,team,professional
+staff,staffer,staf,doorstaff,personnel,everyone,employee,team,professional,receptionist
 location,position,located,locate,attraction,spot,situate,center
-room,rooom,roomy,inroom,roooms,bedroom
+room,rooom,roomy,inroom,roooms,bedroom,rooms
 breakfast,breakfats,brekfast,breakfeast,breakfest,bfast,cereal,eggs,buffet,cooked,continental
 bed,bedded,beds,robbed,bedsheets,mattress,pillow,bedding,duvet,chair,cushion
 service,serviced,seervice,servicing,roomservice,sevice,presentation,approachable
