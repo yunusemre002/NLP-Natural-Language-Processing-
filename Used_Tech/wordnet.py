@@ -1,13 +1,14 @@
 from nltk.corpus import wordnet as wn
 """Wordnet is an NLTK corpus reader, a lexical database for English. It can be used to find the meaning of words, 
 synonym or antonym. One can define it as a semantically oriented dictionary of English."""
+print()
 syns = wn.synsets("dog")
 print(syns)
-print(wn.synsets('dog', pos=wn.VERB))  #chase: kovalamak
+print(wn.synsets('dog', pos=wn.VERB))                 # chase: kovalamak
 print(wn.synset('dog.n.01').definition(), "\n")
 
-print(len(wn.synset('dog.n.01').examples()))    #1
-print(wn.synset('dog.n.01').examples()[0], "\n")      #the dog barked all night
+print(len(wn.synset('dog.n.01').examples()))          # 1
+print(wn.synset('dog.n.01').examples()[0], "\n")      # The dog barked all night
 
 print("lemmas: ", wn.synset('dog.n.01').lemmas() ) #[Lemma('dog.n.01.dog'), Lemma('dog.n.01.domestic_dog'), Lemma('dog.n.01.Canis_familiaris')]
 [str(lemma.name()) for lemma in wn.synset('dog.n.01').lemmas()] #['dog', 'domestic_dog', 'Canis_familiaris']

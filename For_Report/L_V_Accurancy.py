@@ -4,15 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sn
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
-"""
-1. reviews_df = pd.read_csv("file.cvs", encoding = "ISO-8859-1" )  önemli 
-"""
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")   # read data   !!!!!
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1") # Read data!
 reviews_df_com = reviews_df[['Review Text','Review Rating']]
-reviews_df_com = reviews_df_com.dropna().copy() # boş yorum varsa kaldırır.
-#reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
+reviews_df_com = reviews_df_com.dropna().copy()                                         # Remove Empty reviews
+#reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42)   # Take just %1 of all reviews.
 print(reviews_df_com.count() , reviews_df_com.describe(), sep="\n")
-
 
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
 from nltk.corpus import wordnet
@@ -34,14 +30,14 @@ def get_wordnet_pos(pos_tag):
 def clean_text(text):
     text =str(text)
     text = text.lower()    # lower text
-    text = [word.strip(string.punctuation) for word in text.split(" ")]     # tokenize text and remove puncutation
-    text = [word for word in text if not any(c.isdigit() for c in word)]    # remove words that contain numbers
+    text = [word.strip(string.punctuation) for word in text.split(" ")]     # Tokenize text and remove puncutation
+    text = [word for word in text if not any(c.isdigit() for c in word)]    # Remove words that contain numbers
     stop = stopwords.words('english')
-    text = [x for x in text if x not in stop]     # remove stop words
-    text = [t for t in text if len(t) > 0]        # remove empty tokens
+    text = [x for x in text if x not in stop]                               # Remove stop words
+    text = [t for t in text if len(t) > 0]                                  # Remove empty tokens
     pos_tags = pos_tag(text)
-    text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
-    text = [t for t in text if len(t) > 1]     # remove words with only one letter
+    text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]  # Lemmatize text -ing,-ed,-s
+    text = [t for t in text if len(t) > 1]                                  # Remove words with only one letter
     text = " ".join(text)
     #print(text)
     return (text)
@@ -77,7 +73,7 @@ if __name__ == "__main__":
             basarili += 1
         else:
             basarisiz += 1
-            print(colored (i, 'red'))
+            # print(colored (i, 'red'))
 
     print(basarili,basarisiz)
     print("Başarı oranı : %",basarili*100/(basarili+basarisiz))

@@ -19,18 +19,16 @@ print(len(adjList))
 
 # ---------------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------------------
 # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
-outF = open("attributes.txt", "r")
+outF = open("Dataset/txt files/attributes.txt", "r")
 attributes = outF.readlines()  # Taking a str and put it in list[0] so we parse it from ,
 attributes = attributes[0].split(",")  # Convert attributes to list.
 print(attributes)
 
 # ---------------------------------------------- Open/Read CSV File-------------------------------------------------------------
 reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data. Important!
-# print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
-# isim = input("Please enter hotel name?")
-# reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
-reviews_df_com = reviews_df[(reviews_df['Property Name'] == 'A To Z Hotel')][['Review Text','Review Rating', 'Property Name']]
-
+print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
+isim = input("Please enter hotel name?")
+reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
 # reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
 
 extraColumnName = ["Tag", "vaderStar"] + attributes
@@ -64,15 +62,13 @@ def findSubject(dizi,t):            # This function searchs that does the review
         tokenReview = word_tokenize(reviews_df_com['Review Text'].values[t])
         if i in tokenReview:        # t : ilgili yorumun indisi sadece bir yoruma bakıyor
             reviews_df_com[colName].values[t] = 1
-            #silersin aşağıyı
-            #print(i, reviews_df_com['Review Text'].values[t] )
 
 if __name__ == "__main__":
     k = sonuc = posNumber = negNumber = notrNumber = 0
     # attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
     # ------------------- W2V and Fasttex ile genişletilmiş olan kelimeleri alacağız. ------------------
-    outF = open("myOutFile1.txt", "r")
+    outF = open("Dataset/txt files/myOutFile1.txt", "r")
     listOfAttribute = outF.readlines()
     print(listOfAttribute)
 
@@ -96,7 +92,7 @@ if __name__ == "__main__":
         sonucNolmal5 = round((((sonuc - (-1.0)) * (5.0 - 1.0)) / (1.0 - (-1.0))) + 1.0)
         reviews_df_com['vaderStar'].values[t] = sonucNolmal5
 
-        # given compound put in variable which name is sonuc then we will decide the review is positive, negtive
+        # Given compound put in variable which name is sonuc then we will decide the review is positive, negtive
         # or notr. After we decide that, we set the "tag" columns like decided.
         if   sonuc > 0.05 :                                # Positive
             reviews_df_com['Tag'].values[t] = 1

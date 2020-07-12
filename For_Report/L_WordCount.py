@@ -1,15 +1,13 @@
-#This program take a csv and calculate wordcout
-
+#This program take a csv and calculate wordcount
 import pandas as pd
 from collections import Counter
 word_count = Counter()
-import re
-import nltk
+import re, nltk
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 
-# open csv file
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London.csv", encoding = "ISO-8859-1")   # read data !!!!!
+# Open csv file
+reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1")   # read data !!!!!
 reviews_df = reviews_df[reviews_df['Review Text'].str.contains("<U") == False] # Remove some reviews created full of unknown characters.
 reviews_df_com = reviews_df[['Review Text']]
 reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Use  %01 of reviews.
@@ -36,8 +34,6 @@ word_count.update(stringReviews.split())
 print(word_count.most_common(30))       # Print first 30 member
 for i in word_count.most_common(30):    # Print first 30 member one under the other.
     print(i)
-
-
 
 # This example belongs to the fundemental function.
 # lines = """delete acxount license key wordpress license when to add new apps""".splitlines()

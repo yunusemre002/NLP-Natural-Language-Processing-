@@ -48,7 +48,7 @@ def word2vectfonc(kdizi, k):
         dizi[i][1]= format(dizi[i][1], '.4f')                      # just take .0000 (4 decimal after dot.)
         dizi_w2v[i][1]= format(dizi_w2v[i][1], '.4f')
 
-    print(str(k) + ". Most similar to {0}".format(kdizi), dizi)
+    print(str(k) + ". Most similar to (Ftx) {0}".format(kdizi), dizi)
     print(str(k) + ". Most similar to (w2v) {0}".format(kdizi), dizi_w2v)
 
     count = 0
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     # --------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------
     # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
-    outF = open("attributes.txt", "r")
+    outF = open("Dataset/txt files/attributes.txt", "r")
     attributes = outF.readlines()               # Taking a str and put it in list[0] so we parse it from ,
     attributes = attributes[0].split(",")       # Convert attributes to list.
     print(attributes)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     word_vectors = model.wv
     word_vectors_w2v = model_w2v.wv
 
-    outF = open("myOutFile1.txt", "w+")
+    outF = open("Dataset/txt files/myOutFile1.txt", "w+")
 
     for i in range(len(attributes)):            # Each attributes send to word2vectfonc fonction to use w2v and fasttex.
         word2vectfonc(attMatrix[i][0], i)
