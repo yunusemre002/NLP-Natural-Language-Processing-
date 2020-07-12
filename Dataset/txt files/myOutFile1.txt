@@ -1,0 +1,11 @@
+hotel,completely,cover,con,recent,counter,establishment,service,decent,attention,something,stay,london,wonderful,star,quite,say,would,time,get,beautiful
+staff,state,stand,personally,exceptionally,stay,management,literally,mention,con,star,experience,friendly,fresh,food,helpful,bar,could,welcome,first
+location,station,relaxation,reservation,renovation,transportation,hesitation,situation,destination,recommendation,locate,close,hotel,short,london,walk,great,stop,min,lot,city
+room,bathroom,bedroom,beautifully,shower,deliver,bath,super,spacious,however,large,well,tv,little,bed,clean,floor,use
+breakfast,breakfeast,fast,least,counter,break,comment,continental,cover,complimentary,reasonable,include,morning,every,hot,fresh,give,provide,day,quality,water
+bed,beautifully,beautiful,comfort,comfortable,com,cover,bean,separate,covent,comment,room,well,bathroom,clean,level,work,price,tv,nice,size
+service,lovely,comment,recent,really,exceptionally,treatment,covent,completely,create,personally,experience,hotel,much,give,quality,food,excellent,would,even,morning
+bathroom,room,bath,bedroom,however,comfortable,shower,large,deliver,comfort,beautifully,tv,well,spacious,big,little,small,bed
+view,review,parking,quite,forever,lancaster,beautifully,beautiful,cleanliness,centrally,comment,room,quiet,bathroom,spacious,well,open,floor,however,window,high
+food,replacement,present,comment,establishment,decent,recent,mention,completely,con,super,experience,amaze,make,would,much,even,savoy,bar,stay,quality
+restaurant,want,covent,rest,establishment,comment,thing,grant,sufficient,entertainment,mention,bar,say,area,morning,hotel,door,go,take,day,wonderful
