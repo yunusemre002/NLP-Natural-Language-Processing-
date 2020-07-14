@@ -27,26 +27,26 @@ notrAtt = []
 notr=[]
 hotelnames = []
 
-df3= pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1", nrows = 1)  # read data !!!!!
+df3= pd.read_csv("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Dataset/London2.csv", encoding = "ISO-8859-1", nrows = 1)  # read data !!!!!
 
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1")
+reviews_df = pd.read_csv("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Dataset/London2.csv", encoding = "ISO-8859-1")
 
-with open("C:/Users/Demir/Desktop/Final_Project/DataSets/olumluAdj.csv", encoding = "ISO-8859-1")  as f:
+with open("reviewPro/inputs/olumluAdj.csv", encoding = "ISO-8859-1")  as f:
     reader = csv.reader(f)  # Read adjactives list from csv
     data = list(reader)     # output: list of list, each row is a list which is in list.
 posAdj = sum(data, [])     # list of list convert to list of string.
-with open("C:/Users/Demir/Desktop/Final_Project/DataSets/olumsuzAdj.csv", encoding = "ISO-8859-1")  as f:
+with open("reviewPro/inputs/olumsuzAdj.csv", encoding = "ISO-8859-1")  as f:
     reader = csv.reader(f)  # Read adjactives list from csv
     data = list(reader)     # output: list of list, each row is a list which is in list.
 negAdj = sum(data, [])     # list of list convert to list of string.
 
 # ------ TXT'den alınacak W2V ve Fasttext'ten gelecek olan attributelerin benzerleri okunuyor alttaki iki satırda. ----------
-outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/inputs/myOutFile.txt", "r")
+outF = open("reviewPro/inputs/myOutFile.txt", "r")
 listOfAttribute = outF.readlines()
 
 # ---------------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------------------
 # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
-outF = open("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/django_project/blog/inputs/attributes.txt", "r")
+outF = open("reviewPro/inputs/attributes.txt", "r")
 attributes = outF.readlines()  # Taking a str and put it in list[0] so we parse it from ,
 attributes = attributes[0].split(",")  # Convert attributes to list.
 
@@ -79,7 +79,7 @@ def home(request):
         'posts': Post.objects.all(), 
         'hotel_names': hotel_names
     }
-    return render(request, 'blog/home.html',context)
+    return render(request, 'reviewPro/home.html',context)
 
 def grafik(request):
     if not x:
@@ -195,10 +195,10 @@ def grafik(request):
     else:
         print("a")
 
-    return render(request, ['blog/grafik.html', 'blog/p_hotelRating.html'], {'hotelnames': hotelnames, 'array2': x })
+    return render(request, ['reviewPro/grafik.html', 'reviewPro/p_hotelRating.html'], {'hotelnames': hotelnames, 'array2': x })
 
 def kategoriler(request):
-    return render(request, 'blog/kategoriler.html',{'array2': kats})
+    return render(request, 'reviewPro/kategoriler.html',{'array2': kats})
 
 # This string is used all yorum pages. Firstly list convert to str than send to yorum page like str. 
 # Secondly it is parsed form brackets for converting to  list 
@@ -215,51 +215,51 @@ def yorumlar(request):
     
     if len(negG) > 25:
         negG = random.choices(negG, k=25)
-    return render(request, 'blog/yorumlar.html',{'dizi':posG,'mizi':negG, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':posG,'mizi':negG, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarhotel(request):
     d=attArama("hotel")
     allAttributesStr = '*-'.join([i for i in attMatrix[0]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarstaff(request):
     d=attArama("staff")
     allAttributesStr = '*-'.join([i for i in attMatrix[1]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarlocation(request):
     d=attArama("location")
     allAttributesStr = '*-'.join([i for i in attMatrix[2]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarroom(request):
     d=attArama("room")
     allAttributesStr = '*-'.join([i for i in attMatrix[3]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarbreakfast(request):
     d=attArama("breakfast")
     allAttributesStr = '*-'.join([i for i in attMatrix[4]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarbed(request):
     d=attArama("bed")
     allAttributesStr = '*-'.join([i for i in attMatrix[5]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative,'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative,'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarservice(request):
     d=attArama("service")
     allAttributesStr = '*-'.join([i for i in attMatrix[6]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarbathroom(request):
     d=attArama("bathroom")
     allAttributesStr = '*-'.join([i for i in attMatrix[7]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarview(request):
     d=attArama("view")
     allAttributesStr = '*-'.join([i for i in attMatrix[8]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarfood(request):
     d=attArama("food")
     allAttributesStr = '*-'.join([i for i in attMatrix[9]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 def yorumlarrestaurant(request):
     d=attArama("restaurant")
     allAttributesStr = '*-'.join([i for i in attMatrix[10]])
-    return render(request, 'blog/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
+    return render(request, 'reviewPro/yorumlar.html',{'dizi':positive,'mizi':negative, 'negAdjStr': negAdjStr , 'posAdjStr': posAdjStr, 'allAttributesStr' : allAttributesStr})
 
 def attArama(attName):
     positive.clear()

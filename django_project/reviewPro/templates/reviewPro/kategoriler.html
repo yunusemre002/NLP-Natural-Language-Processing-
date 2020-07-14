@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "reviewPro/base.html" %}
 {% block mainblock %}
 
   <style>
@@ -81,8 +81,8 @@
     var selected;
     var array2= {{ array2 }};
 
-    var chart1types = [{type: "Olumlu",percent: Math.round(array2[0]/(array2[0]+array2[1])*100),value: 150,color: "#26ED0E","url": "{% url 'blog-home' %}"},
-                      {type: "Olumsuz",percent: Math.round(array2[1]/(array2[0]+array2[1])*100), value: 30,color: "#ED0E0E","url": "{% url 'blog-yorumlar' %}"}];
+    var chart1types = [{type: "Olumlu",percent: Math.round(array2[0]/(array2[0]+array2[1])*100),value: 150,color: "#26ED0E","url": "{% url 'reviewPro-home' %}"},
+                      {type: "Olumsuz",percent: Math.round(array2[1]/(array2[0]+array2[1])*100), value: 30,color: "#ED0E0E","url": "{% url 'reviewPro-yorumlar' %}"}];
     var chart2types = [{type: "Olumlu",percent: Math.round((array2[2]/(array2[2]+array2[3])*100)),color: "#26ED0E"},
                       {type: "Olumsuz",percent: Math.round(array2[3]/(array2[2]+array2[3])*100),color: "#ED0E0E",}];
     var chart3types = [{type: "Olumlu",percent: Math.round(array2[4]/(array2[4]+array2[5])*100),color: "#26ED0E"},

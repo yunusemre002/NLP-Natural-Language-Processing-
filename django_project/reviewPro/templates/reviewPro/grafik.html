@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "reviewPro/base.html" %}
 {% load static %}
 {% block content %}
             
@@ -25,8 +25,8 @@
         am4core.useTheme(am4themes_animated);
         // Create chart instance
         var chart = am4core.create("chartdiv", am4charts.PieChart);
-        chart.data = [ {"country": "Olumsuz","yorum say?s?":array2[1] ,"url": "{% url 'blog-yorumlar' %}"},
-        {"country": "Olumlu","yorum say?s?": array2[0], "url": "{% url 'blog-yorumlar' %}"}];
+        chart.data = [ {"country": "Olumsuz","yorum say?s?":array2[1] ,"url": "{% url 'reviewPro-yorumlar' %}"},
+        {"country": "Olumlu","yorum say?s?": array2[0], "url": "{% url 'reviewPro-yorumlar' %}"}];
 
         // Add and configure Series
         var pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -55,5 +55,5 @@
 
 
 {% block hotelRatingPart %}
-  {% include 'blog/partial/p_hotelRating.html' %}
+  {% include 'reviewPro/partial/p_hotelRating.html' %}
 {% endblock %}
