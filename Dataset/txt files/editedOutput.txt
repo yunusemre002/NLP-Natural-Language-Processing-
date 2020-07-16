@@ -1,0 +1,11 @@
+hotel,hotels,otel,hotelrooms,motel,hotelier,hotelroom,property,accommodation,place,establishment,accomodation,building
+staff,staffed,staffer,staf,stafford,waitstaff,personnel,employee,everyone,team
+location,location,position,locate,located,situate,center
+room,rooom,inroom,roooms,wetroom,badroom,bedroom,cupboard,twin
+breakfast,breakfast,breakfats,breakfat,brekfast,breakfeast,breafast,breakast,breakfest,bfast,eggs,cereal,continental,buffet,croissant,omelet,pancake,egg
+bed,beds,bedsheets,bedskirt,mattress,pillow,bedding,chair,duvet,topper
+service,serviced,servico,serviceminded,seervice,servicing,roomservice,serving,servise,presentation,sevice
+bathroom,bathrooom,bathrooms,bathrom,bathroon,batrooms,bathrobe,bathrobes,baths,bathe,washroom,bath,bathtub,plasma,rainfall,furnishing,tub,loccitane,hairdryer
+view,views,vieuw,viewed,viewing,overview,viewpoint,overlook,facing,veiw,veiws,vista,outlook,glimpse
+food,foodies,foodie,seafood,foodhall,meal,menu,oatmeal,dish,risotto,presentation,burger,lamb,cuisine,ingredient
+restaurant,restaurante,restaurants,restauraunt,restauarant,restauarants,resaurant,restraurants,restaurent,resturant,reataurants,boulud,restuarant,eatery,boloud,massimo,pierino,kaspers,grill
