@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 
 # Open csv file
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1")   # read data !!!!!
+reviews_df = pd.read_csv("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/DataSet/London2.csv", encoding = "ISO-8859-1")   # read data !!!!!
 reviews_df = reviews_df[reviews_df['Review Text'].str.contains("<U") == False] # Remove some reviews created full of unknown characters.
 reviews_df_com = reviews_df[['Review Text']]
 reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Use  %01 of reviews.

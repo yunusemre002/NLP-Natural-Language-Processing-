@@ -11,25 +11,35 @@ class bcolors:
     WARNING = '\033[93m'
     ENDC = '\033[0m'
 
-with open("C:/Users/Demir/Desktop/Final_Project/DataSets/adjectives.csv", encoding = "ISO-8859-1", ) as f:
+with open("DataSet/olumluAdj.csv", encoding = "ISO-8859-1") as f:
     reader = csv.reader(f)                  # Read adjactives list from csv
     data = list(reader)                     # output: list of list, each row is a list which is in list.
-adjList = sum(data, [])                     # list of list convert to list of string.
+posAdj = sum(data, [])                      # list of list convert to list of string.
+
+with open("DataSet/olumsuzAdj.csv", encoding = "ISO-8859-1") as f:
+    reader = csv.reader(f)  # Read adjactives list from csv
+    data = list(reader)     # output: list of list, each row is a list which is in list.
+negAdj = sum(data, [])      # list of list convert to list of string.
+
+adjList = posAdj + negAdj
 print(len(adjList))
 
 # ---------------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------------------
 # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
 outF = open("Dataset/txt files/attributes.txt", "r")
-attributes = outF.readlines()  # Taking a str and put it in list[0] so we parse it from ,
+attributes = outF.readlines()          # Taking a str and put it in list[0] so we parse it from ,
 attributes = attributes[0].split(",")  # Convert attributes to list.
 print(attributes)
 
-# ---------------------------------------------- Open/Read CSV File-------------------------------------------------------------
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data. Important!
-print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
-isim = input("Please enter hotel name?")
-reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
-# reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
+# ---------------------------------------------- Open/Read CSV File-----------------------------------------------------
+reviews_df = pd.read_csv("DataSet/London2.csv", encoding = "ISO-8859-1")  # Read data. Important!
+# print('\t\t\t\t\t--------Hotels--------\n', reviews_df['Property Name'].unique())
+# isim = input("Please enter hotel name?")
+# reviews_df_com = reviews_df[(reviews_df['Property Name'] == isim)][['Review Text','Review Rating', 'Property Name']]
+
+
+reviews_df_com = reviews_df[['Review Text','Review Rating', 'Property Name']]
+reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42) # Take just %1 of all reviews
 
 extraColumnName = ["Tag", "vaderStar"] + attributes
 for index, columnName in enumerate(extraColumnName):
@@ -42,7 +52,6 @@ for index, columnName in enumerate(extraColumnName):
 # And if 5. column is 1, we get there some thing about location because, this word : "location" is used in this review. ]
 
 reviews_df_com = reviews_df_com.dropna().copy() # Remove emty review.
-#reviews_df_com = reviews_df_com.sample(frac = 0.01, replace = False, random_state=42) # Toplamda 15000 yarom var bunların %1 ini yani 1500 tanesini işleme koy.
 print(reviews_df_com.describe())
 
 #------------------------------------------------SENTİMENT ANALYSES---------------------------------------------------
@@ -65,11 +74,11 @@ def findSubject(dizi,t):            # This function searchs that does the review
 
 if __name__ == "__main__":
     k = sonuc = posNumber = negNumber = notrNumber = 0
-    # attributes = ["hotel", "staff", "location", "room", "breakfast", "bed", "service", "bathroom", "view", "food", "restaurant"]
 
     # ------------------- W2V and Fasttex ile genişletilmiş olan kelimeleri alacağız. ------------------
-    outF = open("Dataset/txt files/myOutFile1.txt", "r")
+    outF = open("Dataset/txt files/oneOutput.txt", "r")
     listOfAttribute = outF.readlines()
+    listOfAttribute = [att[:-1] for att in listOfAttribute] # Because of get rid of that, wrote this if condition. Delete 2 character end of str
     print(listOfAttribute)
 
     # ------------------ Create a matrix. it can be thought looks like txt. -----------------------------------------
@@ -79,7 +88,12 @@ if __name__ == "__main__":
     for i in range(len(attributes)):                  # Put attributes to matrix
         loa = listOfAttribute[i].split(",")           # taking listOfAttribute which was created by L_W2V_file. Convert it to a list.
         for a in loa:
-            attMatrix[i].append(a)                    # Create a matrix each row is equals to 1 attributes(and similars) of hotel.
+            if '\n' in a:  # When reading elements from txt, '\n'  also is added to end words .
+                #a = a[:-1]  # Because of get rid of that, wrote this if condition. Delete 2 character end of str
+                attMatrix[i].append(a)  # Create a list which contains full words of attributes for colored when print.(+similar)
+            else:
+                attMatrix[i].append(a)
+
     # pprint(attMatrix)
 
     outF.close()
@@ -102,7 +116,7 @@ if __name__ == "__main__":
             reviews_df_com['Tag'].values[t] = -1
             # print(colored(i, 'red'), sonuc)
 
-        for i in range(len(attributes)):  # Each attributes send to word2vectfonc fonction to use w2v and fasttex.
+        for i in range(len(attributes)):  # Each attributes send to word2vectfonc function to use w2v and fasttex.
             findSubject(attMatrix[i], t)
 
         #print(reviews_df_com.values[t])
@@ -110,35 +124,47 @@ if __name__ == "__main__":
     print(reviews_df_com.pivot_table(index=['Tag'], aggfunc='size'))
 
     countGeneral = len(reviews_df_com.index)
-    sumRatingGeneral = reviews_df_com['vaderStar'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-    avgRatingGeneral = float(format(sumRatingGeneral / countGeneral, '.4f'))
+    sumRatingGeneral = reviews_df_com['vaderStar'].sum(axis=0, skipna=True)          # Calculate for each attributes avarage score
+    avgRatingGeneral = float(format(sumRatingGeneral / countGeneral, '.3f'))
     sumRatingUserGeneral = reviews_df_com['Review Rating'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-    avgRatingUserGeneral = float(format(sumRatingUserGeneral / countGeneral, '.4f'))
+    avgRatingUserGeneral = float(format(sumRatingUserGeneral / countGeneral, '.3f'))
     # avgRatingUserGeneral = 4.52
-    print(Fore.YELLOW + "Avg Rating - Vader:{} User :{} Vader-User :{}".format(avgRatingGeneral, avgRatingUserGeneral,
-                                                                             format(avgRatingGeneral - avgRatingUserGeneral, '.4f')))
+    print(Fore.YELLOW + "Avg Rating -> Vader:{} - User:{} => Difference:{}".format(avgRatingGeneral, avgRatingUserGeneral,
+                                                                             format(avgRatingGeneral - avgRatingUserGeneral, '.3f')))
     print()
 
     for i in attributes:
         df1 = reviews_df_com[reviews_df_com[i] == 1]    # Take just wanted attributes reviews into df1.
                                                         # (All column is still exist. Just irrelevant row delete.)
-        dfpos  = len(df1[df1["Tag"] ==  1])               # The number of pos, neg and notr are calculated.
+        dfpos  = len(df1[df1["Tag"] ==  1])             # The number of pos, neg and notr are calculated.
         dfneg  = len(df1[df1["Tag"] == -1])
         dfnotr = len(df1[df1["Tag"] ==  0])
 
         count = len(df1.index)
-        sumRating = df1['vaderStar'].sum(axis=0, skipna = True)     # Calculate for each attributes avarage score
-        avgRating = float(format(sumRating/count, '.4f'))
+        sumRating = df1['vaderStar'].sum(axis=0, skipna = True)        # Calculate for each attributes avarage score
+        if count != 0:
+            avgRating = float(format(sumRating / count, '.3f'))
+        else:
+            avgRating = 0
 
-        sumRatingUser = df1['Review Rating'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage score
-        avgRatingUser = float(format(sumRatingUser / count, '.4f'))
+        sumRatingUser = df1['Review Rating'].sum(axis=0, skipna=True)  # Calculate for each attributes avarage star
+        if count != 0:
+            avgRatingUser = float(format(sumRatingUser / count, '.3f'))
+        else:
+            avgRatingUser = 0
 
-        print(i, " : ", len(reviews_df_com[reviews_df_com[i] == 1]), "/", len(reviews_df_com.index), " rewiew is relevant. ", end="")
-        print(Fore.BLUE + "Avg Rating - Vader:{} User :{} Vader-User :{}".format(avgRating, avgRatingUser, format(avgRating-avgRatingUser, '.4f')))
+        print(i, ":", len(df1), "/", len(reviews_df_com.index), " rewiew is relevant. ", end="")
+        print(Fore.BLUE + "Avg Rating -> Vader:{} - User:{} => Difference :{}".format(avgRating, avgRatingUser, format(avgRating-avgRatingUser, '.3f')))
 
-        print(Fore.GREEN  +  " + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
-        print(Fore.YELLOW +  " 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
-        print(Fore.RED    +  " - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
+        # print(Fore.GREEN  +  " + : {} / {} ".format(dfpos,  len(reviews_df_com[reviews_df_com[i] == 1])))
+        # print(Fore.YELLOW +  " 0 : {} / {} ".format(dfnotr, len(reviews_df_com[reviews_df_com[i] == 1])))
+        # print(Fore.RED    +  " - : {} / {} ".format(dfneg,  len(reviews_df_com[reviews_df_com[i] == 1])))
+        # print(Style.RESET_ALL)
+        # print()
+
+        print( Fore.GREEN  + " + : {} % ".format(format(dfpos/len(df1)*100,  '0.1f')))
+        print( Fore.YELLOW + " 0 : {} % ".format(format(dfnotr/len(df1)*100, '0.1f')))
+        print( Fore.RED    + " - : {} % ".format(format(dfneg/len(df1)*100,  '0.1f')))
         print(Style.RESET_ALL)
         print()
 

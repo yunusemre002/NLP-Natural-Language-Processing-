@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sn
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London2.csv", encoding = "ISO-8859-1") # Read data!
+reviews_df = pd.read_csv("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/DataSet/London2.csv", encoding = "ISO-8859-1") # Read data!
 reviews_df_com = reviews_df[['Review Text','Review Rating']]
 reviews_df_com = reviews_df_com.dropna().copy()                                         # Remove Empty reviews
 #reviews_df_com = reviews_df_com.sample(frac = 0.1, replace = False, random_state=42)   # Take just %1 of all reviews.

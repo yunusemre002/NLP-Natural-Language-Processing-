@@ -5,12 +5,17 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet, stopwords
 stop_words = set(stopwords.words('english'))
 
-#-------------------------------------------------Import Data from CSV-------------------------------------------------------
-reviews_df = pd.read_csv("C:/Users/Demir/Desktop/Final_Project/DataSets/London1.csv", encoding = "ISO-8859-1")  # Read data !!!!
-reviews_df_com = reviews_df[['Review Text']]                                        # Remove except for  "Review Text"
-reviews_df_com = reviews_df_com.dropna().copy()                                     # Remove empty reviews ,if there is.
-reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Take %01 of reviews.
+import time
+start_time = time.time()
+print("%s" % (time.time()-start_time))
+
+#-------------------------------------------------Import Data from CSV--------------------------------------------------------
+reviews_df_com = pd.read_csv("C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Dataset/London2.csv",
+                             usecols=['Review Text'] ,encoding = "ISO-8859-1")  # Read data!  # Take Just "Review Text" column
+reviews_df_com = reviews_df_com.dropna().copy()                                 # Remove empty reviews ,if there is.
+# reviews_df_com = reviews_df_com.sample(frac=0.01, replace=False, random_state=42)  # Take %01 of reviews.
 print(reviews_df_com.describe())
+
 
 #------------------------------------------------PREPROCCESSİNG---------------------------------------------------
 def get_wordnet_pos(pos_tag):
@@ -25,11 +30,11 @@ def get_wordnet_pos(pos_tag):
     else:
         return wordnet.NOUN
 def clean_text(text):
-    text = text.lower()    # lower text
+    text = text.lower()                                 # lower text
     text = re.sub('[^a-zA-Z]', ' ', text)
     text = word_tokenize(text)
     text = [x for x in text if x not in stop_words]     # remove stop words
-    pos_tags = pos_tag(text)
+    pos_tags = pos_tag(text)                            # ('park', 'NN'), ('london', 'JJ') -> NN = Noun, JJ = adj.
     text = [WordNetLemmatizer().lemmatize(t[0], get_wordnet_pos(t[1])) for t in pos_tags]    # lemmatize text  -ing, -ed, s,ss,
     # text = [WordNetLemmatizer().lemmatize(t) for t in text]                                # Other option of lemmatizer
     text = [t for t in text if len(t) > 1]     # remove words with only one letter or empty
@@ -37,28 +42,30 @@ def clean_text(text):
 
 # ------------------------------- Find and Print---------------------------------
 def word2vectfonc(kdizi, k):
-    dizi = [list(x) for x in model.wv.most_similar(positive=kdizi, topn=10)]  # function return tuple of tuple . To chance it, convert to list of list.
-    dizi_w2v = [list(x) for x in model_w2v.wv.most_similar(positive=kdizi, topn=10)]
+    dizi_w2v = [list(x) for x in model_w2v.wv.most_similar(positive=kdizi, topn=10)]      # Function return tuple of tuple .
+    dizi_ft = [list(x) for x in model_fasttext.wv.most_similar(positive=kdizi, topn=10)]  # To chance it, convert to list of list.
 
-    d=[]
+    #-------- it turns tuple. Tuples 2. element is nearest value. We will get rid of them. Just take 1. element.-------
+    d_ft=[]
     d_w2v=[]
-    for i in range(len(dizi)):
-        d.append(dizi[i][0])                                       # dizi[i] is tuple, so converted.
+    for i in range(len(dizi_ft)):
+        d_ft.append(dizi_ft[i][0])                                     # dizi_ft[i] is tuple, so converted.
         d_w2v.append(dizi_w2v[i][0])
-        dizi[i][1]= format(dizi[i][1], '.4f')                      # just take .0000 (4 decimal after dot.)
-        dizi_w2v[i][1]= format(dizi_w2v[i][1], '.4f')
+        dizi_ft[i][1] = format(dizi_ft[i][1], '.2f')                   # just take .00 (2 decimal after dot.)
+        dizi_w2v[i][1]= format(dizi_w2v[i][1], '.2f')
 
-    print(str(k) + ". Most similar to (Ftx) {0}".format(kdizi), dizi)
-    print(str(k) + ". Most similar to (w2v) {0}".format(kdizi), dizi_w2v)
+    print(str(k) + ". Most similar to (Ftx) {0}".format(kdizi), dizi_ft)       # for just key of dict: d_ft
+    print(str(k) + ". Most similar to (w2v) {0}".format(kdizi), dizi_w2v)      # for just key of dict: d_w2v
 
+    # --------------------- Write to myoutFile.txt (Don't write two times same word)-----------------------------------
     count = 0
     outF.write(kdizi)
-    for line in d:
+    for line in d_ft:
         outF.write(",")
         outF.write(str(line))
         count +=1
     for line in d_w2v:
-        if line not in d:                           # If it wrote before, don't write
+        if line not in d_ft:                           # If it wrote before, don't write
             outF.write(",")
             outF.write(str(line))
             count +=1
@@ -70,34 +77,34 @@ def word2vectfonc(kdizi, k):
 if __name__ == "__main__":
 
     # --------------- TAKING WORD WHICH ARE İNPUT FOR W2V AND FASTTEX FROM attributes.TXT ---------------
-    # attributes.TXT has a list of attributes which define to hotel. (it can be cahnge by users easily.)
+    # attributes.TXT has a list of attributes define the hotel. (it can be changed by users easily.)
     outF = open("Dataset/txt files/attributes.txt", "r")
-    attributes = outF.readlines()               # Taking a str and put it in list[0] so we parse it from ,
+    attributes = outF.readlines()               # Taking a str and put it in list[0] so we parse it from ',' (There are just one line)
     attributes = attributes[0].split(",")       # Convert attributes to list.
     print(attributes)
 
     attMatrix = [[] for _ in range(len(attributes))]  # Create len(attributes) different list in list ** important! wirte like this!
-    #pprint(attMatrix)
+    # pprint(attMatrix)
 
     for i in range(len(attributes)):                  # Put attributes to matrix 0. column m[0][0], m[1][0], m[2][0] like this.
         attMatrix[i].append(attributes[i])
-    # pprint(attMatrix)                               # Printing good matrix
+    # pprint(attMatrix)                                 # Printing good matrix
 
-    #-------------------------- Preproccessing ----------------------------------
+    # -------------------------------- Preproccessing -------------------------------------------
     reviews = []
     for i in reviews_df_com["Review Text"]:
         reviews.append(clean_text(i))     #top.append(text)  # That is very IMPORTANT !!! :)
 
-    # --------------------------- Word2Vect ----------------------------------
-    model_w2v = Word2Vec(reviews, size=150, window=10, min_count=2, workers=10)
-    model_w2v.train(reviews, total_examples=len(reviews), epochs=10)
+    # ---------------------------------- Word2Vect -----------------------------------------------
+    model_w2v = Word2Vec(reviews, size=150, window=10, min_count=2, workers=10, sg=0 )  #sg=0 cbow
+    model_w2v.train(reviews, total_examples=len(reviews), epochs=12)
 
-    # ---------------------------- Fasttext ----------------------------------
-    model = FastText(size=170, window=10, min_count=2, workers=10)  # instantiate
-    model.build_vocab(sentences=reviews)
-    model.train(sentences=reviews, total_examples=len(reviews), epochs=10)  # train
+    # ---------------------------------- Fasttext -----------------------------------------------
+    model_fasttext = FastText(size=170, window=10, min_count=2, workers=10, sg=0)  # instantiate
+    model_fasttext.build_vocab(sentences=reviews)
+    model_fasttext.train(sentences=reviews, total_examples=len(reviews), epochs=12)  # train
 
-    word_vectors = model.wv
+    word_vectors = model_fasttext.wv
     word_vectors_w2v = model_w2v.wv
 
     outF = open("Dataset/txt files/myOutFile1.txt", "w+")
