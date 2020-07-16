@@ -57,7 +57,8 @@ for i in range(len(attributes)):             # Put attributes to matrix
     loa = listOfAttribute[i].split(",")      # taking listOfAttribute which was created by L_W2V_file. Convert it to a list.
     for a in loa:
         if '\n' in a:                        # When reading elements from txt, '\n'  also is added to end words .
-            a = a[:-2]                       # Because of get rid of that, wrote this if condition. Delete 2 character end of str
+            a = a[:-1]                       # Because of get rid of that, wrote this if condition. Delete 2 character end of str
+            # -1 or -2 I think -1 but \ + n = 2 character :) Find it :)
             attMatrix[i].append(a)           # Create a list which contains full words of attributes for colored when print.(+similar) 
             allAttributes.append(a)          # Create a matrix each row is equals to 1 attributes(and similars) of hotel.
         else:
