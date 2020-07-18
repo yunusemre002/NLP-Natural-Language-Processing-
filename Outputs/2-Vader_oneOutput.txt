@@ -1,0 +1,190 @@
+C:\Users\Demir\AppData\Local\Programs\Python\Python37\python.exe C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Final_L_V_.py
+169
+['hotel', 'staff', 'location', 'room', 'breakfast', 'bed', 'service', 'bathroom', 'view', 'food', 'restaurant']
+       Review Rating      Tag  vaderStar  ...     view     food  restaurant
+count   23117.000000  23117.0    23117.0  ...  23117.0  23117.0     23117.0
+mean        4.523122      0.0        0.0  ...      0.0      0.0         0.0
+std         0.875413      0.0        0.0  ...      0.0      0.0         0.0
+min         1.000000      0.0        0.0  ...      0.0      0.0         0.0
+25%         4.000000      0.0        0.0  ...      0.0      0.0         0.0
+50%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+75%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+max         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+
+[8 rows x 14 columns]
+['hotel\n', 'staff\n', 'location\n', 'room\n', 'breakfast\n', 'bed\n', 'service\n', 'bathroom\n', 'view\n', 'food\n', 'restaurant']
+Tag
+-1      920
+ 0       90
+ 1    22107
+dtype: int64
+General Avg Rating -> Vader:4.79 - User(Star):4.523 => Difference:0.267
+
+hotel : 15543 / 23117  rewiew is relevant. Avg Rating -> Vader:4.797 - User(Star):4.51 => Difference :0.287
+ + : 95.7 % 
+ 0 : 0.3 % 
+ - : 4.0 % 
+
+
+staff : 12104 / 23117  rewiew is relevant. Avg Rating -> Vader:4.863 - User(Star):4.6 => Difference :0.263
+ + : 97.2 % 
+ 0 : 0.2 % 
+ - : 2.5 % 
+
+
+location : 6902 / 23117  rewiew is relevant. Avg Rating -> Vader:4.866 - User(Star):4.514 => Difference :0.352
+ + : 97.5 % 
+ 0 : 0.2 % 
+ - : 2.3 % 
+
+
+room : 12743 / 23117  rewiew is relevant. Avg Rating -> Vader:4.785 - User(Star):4.438 => Difference :0.347
+ + : 95.4 % 
+ 0 : 0.2 % 
+ - : 4.4 % 
+
+
+breakfast : 6750 / 23117  rewiew is relevant. Avg Rating -> Vader:4.823 - User(Star):4.432 => Difference :0.391
+ + : 96.3 % 
+ 0 : 0.2 % 
+ - : 3.4 % 
+
+
+bed : 3425 / 23117  rewiew is relevant. Avg Rating -> Vader:4.806 - User(Star):4.405 => Difference :0.401
+ + : 95.6 % 
+ 0 : 0.3 % 
+ - : 4.1 % 
+
+
+service : 8110 / 23117  rewiew is relevant. Avg Rating -> Vader:4.821 - User(Star):4.583 => Difference :0.238
+ + : 96.3 % 
+ 0 : 0.3 % 
+ - : 3.4 % 
+
+
+bathroom : 3680 / 23117  rewiew is relevant. Avg Rating -> Vader:4.808 - User(Star):4.385 => Difference :0.423
+ + : 95.6 % 
+ 0 : 0.2 % 
+ - : 4.1 % 
+
+
+view : 2406 / 23117  rewiew is relevant. Avg Rating -> Vader:4.869 - User(Star):4.559 => Difference :0.310
+ + : 97.2 % 
+ 0 : 0.1 % 
+ - : 2.7 % 
+
+
+food : 4050 / 23117  rewiew is relevant. Avg Rating -> Vader:4.842 - User(Star):4.605 => Difference :0.237
+ + : 96.8 % 
+ 0 : 0.2 % 
+ - : 2.9 % 
+
+
+restaurant : 3067 / 23117  rewiew is relevant. Avg Rating -> Vader:4.858 - User(Star):4.576 => Difference :0.282
+ + : 97.1 % 
+ 0 : 0.1 % 
+ - : 2.8 % 
+
+
+
+C:\Users\Demir\AppData\Local\Programs\Python\Python37\python.exe C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Final_L_V_.py
+169
+['hotel', 'staff', 'location', 'room', 'breakfast', 'bed', 'service', 'bathroom', 'view', 'food', 'restaurant']
+       Review Rating      Tag  vaderStar  ...     view     food  restaurant
+count   23117.000000  23117.0    23117.0  ...  23117.0  23117.0     23117.0
+mean        4.523122      0.0        0.0  ...      0.0      0.0         0.0
+std         0.875413      0.0        0.0  ...      0.0      0.0         0.0
+min         1.000000      0.0        0.0  ...      0.0      0.0         0.0
+25%         4.000000      0.0        0.0  ...      0.0      0.0         0.0
+50%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+75%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+max         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+
+[8 rows x 14 columns]
+['hotel\n', 'staff\n', 'location\n', 'room\n', 'breakfast\n', 'bed\n', 'service\n', 'bathroom\n', 'view\n', 'food\n', 'restaurant\n']
+hotel
+staff
+location
+room
+breakfast
+bed
+service
+bathroom
+view
+food
+restaurant
+Tag
+-1      920
+ 0       90
+ 1    22107
+dtype: int64
+Avg Rating - Vader:4.7901 User :4.5231 Vader-User :0.2670
+
+hotel  :  15543 / 23117  rewiew is relevant. Avg Rating - Vader:4.7974 User :4.5099 Vader-User :0.2875
+ + : 14878 / 15543 
+ 0 : 44 / 15543 
+ - : 621 / 15543 
+
+
+staff  :  12104 / 23117  rewiew is relevant. Avg Rating - Vader:4.8634 User :4.5997 Vader-User :0.2637
+ + : 11768 / 12104 
+ 0 : 30 / 12104 
+ - : 306 / 12104 
+
+
+location  :  6902 / 23117  rewiew is relevant. Avg Rating - Vader:4.8661 User :4.5141 Vader-User :0.3520
+ + : 6727 / 6902 
+ 0 : 16 / 6902 
+ - : 159 / 6902 
+
+
+room  :  12743 / 23117  rewiew is relevant. Avg Rating - Vader:4.7848 User :4.4384 Vader-User :0.3464
+ + : 12153 / 12743 
+ 0 : 26 / 12743 
+ - : 564 / 12743 
+
+
+breakfast  :  6750 / 23117  rewiew is relevant. Avg Rating - Vader:4.8228 User :4.4317 Vader-User :0.3911
+ + : 6503 / 6750 
+ 0 : 15 / 6750 
+ - : 232 / 6750 
+
+
+bed  :  3425 / 23117  rewiew is relevant. Avg Rating - Vader:4.8061 User :4.405 Vader-User :0.4011
+ + : 3276 / 3425 
+ 0 : 9 / 3425 
+ - : 140 / 3425 
+
+
+service  :  8110 / 23117  rewiew is relevant. Avg Rating - Vader:4.8213 User :4.583 Vader-User :0.2383
+ + : 7806 / 8110 
+ 0 : 26 / 8110 
+ - : 278 / 8110 
+
+
+bathroom  :  3680 / 23117  rewiew is relevant. Avg Rating - Vader:4.8082 User :4.3848 Vader-User :0.4234
+ + : 3519 / 3680 
+ 0 : 9 / 3680 
+ - : 152 / 3680 
+
+
+view  :  2406 / 23117  rewiew is relevant. Avg Rating - Vader:4.8687 User :4.5586 Vader-User :0.3101
+ + : 2339 / 2406 
+ 0 : 3 / 2406 
+ - : 64 / 2406 
+
+
+food  :  4050 / 23117  rewiew is relevant. Avg Rating - Vader:4.8417 User :4.6054 Vader-User :0.2363
+ + : 3922 / 4050 
+ 0 : 9 / 4050 
+ - : 119 / 4050 
+
+
+restaurant  :  3067 / 23117  rewiew is relevant. Avg Rating - Vader:4.8582 User :4.5761 Vader-User :0.2821
+ + : 2978 / 3067 
+ 0 : 3 / 3067 
+ - : 86 / 3067 
+
+
+['hotel', 'staff', 'location', 'room', 'breakfast', 'bed', 'service', 'bathroom', 'view', 'food', 'restaurant']
+Please, chose wanted review from above?

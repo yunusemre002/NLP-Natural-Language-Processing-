@@ -1,0 +1,101 @@
+C:\Users\Demir\AppData\Local\Programs\Python\Python37\python.exe C:/Users/Demir/Documents/GitHub/NLP-Natural-Language-Processing-/Final_L_V_.py
+169
+['hotel', 'staff', 'location', 'room', 'breakfast', 'bed', 'service', 'bathroom', 'view', 'food', 'restaurant']
+       Review Rating      Tag  vaderStar  ...     view     food  restaurant
+count   23117.000000  23117.0    23117.0  ...  23117.0  23117.0     23117.0
+mean        4.523122      0.0        0.0  ...      0.0      0.0         0.0
+std         0.875413      0.0        0.0  ...      0.0      0.0         0.0
+min         1.000000      0.0        0.0  ...      0.0      0.0         0.0
+25%         4.000000      0.0        0.0  ...      0.0      0.0         0.0
+50%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+75%         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+max         5.000000      0.0        0.0  ...      0.0      0.0         0.0
+
+[8 rows x 14 columns]
+['hotel,hotels,otel,hotelrooms,motel,hotelier,hotelroom,property,accommodation,place,establishment,accomodation,building\n', 'staff,staffed,staffer,staf,waitstaff,personnel,employee,everyone,team\n', 'location,position,locate,located,center\n', 'room,rooom,inroom,bedroom,cupboard,twin\n', 'breakfast,breakfeast,breakast,breakfest,eggs,cereal,continental,buffet,croissant,omelet,pancake,egg\n', 'bed,beds,bedsheets,mattress,pillow,bedding,chair,duvet,topper\n', 'service,serviced,serviceminded,servicing,roomservice,serving,presentation,sevice\n', 'bathroom,bathrooms,bathrobe,bathrobes,baths,washroom,bath,bathtub,plasma,rainfall,furnishing,tub,hairdryer\n', 'view,views,viewed,viewing,overview,overlook,facing,outlook,glimpse\n', 'food,foodies,seafood,meal,menu,dish,risotto,presentation,burger,lamb,cuisine\n', 'restaurant,restaurants,resturant,boulud,restuarant,boloud,massimo,kaspers,grill']
+Tag
+-1      920
+ 0       90
+ 1    22107
+dtype: int64
+General Avg Rating -> Vader:4.79 - User(Star):4.523 => Difference:0.267
+
+hotel : 17576 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.795 - User(Star):4.51 => Difference :0.285
+ + : 95.7 % 
+ 0 : 0.3 % 
+ - : 4.0 % 
+
+
+staff : 12762 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.862 - User(Star):4.601 => Difference :0.261
+ + : 97.2 % 
+ 0 : 0.3 % 
+ - : 2.6 % 
+
+
+location : 8246 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.862 - User(Star):4.515 => Difference :0.347
+ + : 97.4 % 
+ 0 : 0.3 % 
+ - : 2.3 % 
+
+
+room : 12910 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.786 - User(Star):4.441 => Difference :0.345
+ + : 95.4 % 
+ 0 : 0.2 % 
+ - : 4.4 % 
+
+
+breakfast : 7214 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.822 - User(Star):4.427 => Difference :0.395
+ + : 96.3 % 
+ 0 : 0.2 % 
+ - : 3.5 % 
+
+
+bed : 4727 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.811 - User(Star):4.422 => Difference :0.389
+ + : 95.7 % 
+ 0 : 0.2 % 
+ - : 4.1 % 
+
+
+service : 8316 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.821 - User(Star):4.576 => Difference :0.245
+ + : 96.2 % 
+ 0 : 0.3 % 
+ - : 3.4 % 
+
+
+bathroom : 5298 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.817 - User(Star):4.429 => Difference :0.388
+ + : 95.8 % 
+ 0 : 0.2 % 
+ - : 4.0 % 
+
+
+view : 3601 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.876 - User(Star):4.592 => Difference :0.284
+ + : 97.4 % 
+ 0 : 0.1 % 
+ - : 2.4 % 
+
+
+food : 5300 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.84 - User(Star):4.589 => Difference :0.251
+ + : 96.7 % 
+ 0 : 0.3 % 
+ - : 3.0 % 
+
+
+restaurant : 4996 / 23117  rewiew is relevant. 
+Avg Rating -> Vader:4.875 - User(Star):4.587 => Difference :0.288
+ + : 97.5 % 
+ 0 : 0.1 % 
+ - : 2.3 % 
+
+
+['hotel', 'staff', 'location', 'room', 'breakfast', 'bed', 'service', 'bathroom', 'view', 'food', 'restaurant']
+Please, chose wanted review from above?
