@@ -45,3 +45,13 @@ Ayrıca tüm programı tek bir kod parçasıyla yapılması veya tüm işi sadec
 
 - İş bu proje kapsamında bu iki işlem önceden yapılıp sonuçları kullanılacaktır.
 </div>
+
+![m1](https://user-images.githubusercontent.com/41540426/89736617-50358380-da73-11ea-870b-329c24de082d.PNG)
+![m2](https://user-images.githubusercontent.com/41540426/89736619-51ff4700-da73-11ea-8a75-8560cb8e2acf.PNG)
+![m3](https://user-images.githubusercontent.com/41540426/89736621-53307400-da73-11ea-848c-f0bcc95a01a2.PNG)
+![m4](https://user-images.githubusercontent.com/41540426/89736622-5461a100-da73-11ea-8e2f-655d4d553d48.PNG)
+![m5](https://user-images.githubusercontent.com/41540426/89736624-5592ce00-da73-11ea-9967-feef8badfbf0.PNG)
+![m6](https://user-images.githubusercontent.com/41540426/89736627-588dbe80-da73-11ea-9a8d-c65bec5c919b.PNG)
+![m7](https://user-images.githubusercontent.com/41540426/89736633-5d527280-da73-11ea-80ca-5e9728db266b.PNG)
+![m8](https://user-images.githubusercontent.com/41540426/89736634-5f1c3600-da73-11ea-9028-d774e95db29c.PNG)
+
